@@ -12,51 +12,76 @@ import java.util.NoSuchElementException;
  * @author Heng Han Yee
  */
 public interface Queue<E> {
-  
-  /** Adds the given item to the back of the queue.
+
+  /**
+   * Initializes an empty queue.
+   */
+  void initialize();
+
+  /**
+   * Adds the given item to the back of the queue.
    * @param item to be added to the queue
    */
   void enqueue(E item);
-  
-  /** Removes an item from the front of the queue and returns it.
+
+  /**
+   * Removes an item from the front of the queue and returns it.
    * @return the item at the front of the queue, or null if empty
    */
   E dequeue();
-  
-  /** Returns the item at the front of the queue, without removing it.
+
+  /**
+   * Returns the item at the front of the queue, without removing it.
    * @return the item at the front of the queue, or null if empty
    */
   E peek();
-  
-  /** Returns true if the queue is empty.
+
+  /**
+   * Returns true if the queue is empty.
+   * @return true if the queue contains no elements, false otherwise
    */
   boolean isEmpty();
-  
-  /** Removes all items from the queue. */
+
+  /**
+   * Returns the number of elements in the queue.
+   * @return the number of elements in the queue
+   */
+  int size();
+
+  /**
+   * Removes all items from the queue.
+   */
   void clear();
-  
-  /** Inserts the specified element into the queue. Returns true if successful.
-   * @param item to be added to the queue
+
+  /**
+   * Inserts the specified element into the queue. Returns true if successful.
    * @return true if the element was added successfully
    */
   boolean offer(E item);
-  
-  /** Retrieves and removes the head of the queue, or returns null if the queue is empty.
+
+  /**
+   * Retrieves and removes the head of the queue, or returns null if the queue is empty.
    * @return the item at the front of the queue, or null if empty
    */
   E poll();
-  
-  /** Returns the element at the front of the queue. Throws an exception if the queue is empty.
+
+  /**
+   * Returns the element at the front of the queue. Throws an exception if the queue is empty.
    * @return the item at the front of the queue
    * @throws NoSuchElementException if the queue is empty
    */
   E element();
-  
-  /** Converts the queue to an array.
+
+  /**
+   * Converts the queue to an array.
    * @return an array containing all the items in the queue
    */
   Object[] toArray();
-  
-  /** Returns an iterator over the elements in the queue. */
+
+  /**
+   * Allows  to traverse the elements of the queue in a sequential manner,
+   * from the front to the back, without exposing the internal structure of the queue.
+   * @return an iterator over the elements in the queue
+   */
   Iterator<E> iterator();
 }
