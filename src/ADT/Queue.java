@@ -20,15 +20,13 @@ public interface Queue<E> {
 
     /**
      * Adds an item to the back of the queue.
-     * 
-     * @param item the element to be added to the queue
      */
     void enqueue(E item);
 
     /**
      * Removes and returns the item at the front of the queue.
      * 
-     * @return the element at the front of the queue, or null if the queue is empty
+     * @return at the front of the queue, or null if the queue is empty
      */
     E dequeue();
 
@@ -66,21 +64,21 @@ public interface Queue<E> {
     boolean offer(E item);
 
     /**
-     * Removes and returns the item at the front of the queue, or null if the queue is empty.
+     * Retrieves and removes the head of the queue, or returns null if the queue is empty.
      * 
      * @return the element at the front of the queue, or null if the queue is empty
      */
     E poll();
 
     /**
-     * Retrieves, but does not remove, the item at the front of the queue.
+     * Retrieves, but does not remove, the head of this queue.
      * 
      * @return the element at the front of the queue
      */
     E element();
 
     /**
-     * Returns an array containing all elements in the queue.
+     * Convert the queue to an array.
      * 
      * @return an array of all elements in the queue
      */
