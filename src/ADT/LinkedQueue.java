@@ -1,112 +1,144 @@
+
 package ADT;
-
 import java.util.Iterator;
-/**
- * LinkedQueue.java A class that implements the ADT Queue by using a chain of
- * nodes that has both head and tail references.
- * 
- * SAMPLE QUEUE FROM LECTURE
- * @author Frank M. Carrano
- * @version 2.0
- */
-public class LinkedQueue<T> implements Queue<T> {
+import java.util.NoSuchElementException;
 
-  private Node firstNode; // references node at front of queue
-  private Node lastNode;  // references node at back of queue
+
+public class LinkedQueue<E> implements Queue<E> {
+    private Node<E> front;
+    private Node<E> back;
+    private int size;
+
+    private static class Node<E> {
+        E data;
+        Node<E> next;
+
+        Node(E data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
     public LinkedQueue() {
-    firstNode = null;
-    lastNode = null;
-    } 
-
-    public void enqueue(T newEntry) {
-    Node newNode = new Node(newEntry, null);
-
-    if (isEmpty()) {
-        firstNode = newNode;
-    } else {
-        lastNode.next = newNode;
+        initialize();
     }
 
-    lastNode = newNode;
-    } 
-
-    public T getFront() {
-    T front = null;
-
-    if (!isEmpty()) {
-    front = firstNode.data;
+    // Remove @Override annotation
+    public void initialize() {
+        front = null;
+        back = null;
+        size = 0;
     }
 
-    return front;
-    } 
-
-    public T dequeue() {
-    T front = null;
-
-    if (!isEmpty()) {
-    front = firstNode.data;
-    firstNode = firstNode.next;
-
-    if (firstNode == null) {
-        lastNode = null;
+    // @Override
+    public void enqueue(E item) {
+        Node<E> newNode = new Node<>(item);
+        if (isEmpty()) {
+            front = newNode;
+        } else {
+            back.next = newNode;
+        }
+        back = newNode;
+        size++;
     }
-    } 
 
-    return front;
-  } // end dequeue
+    // @Override
+    public E dequeue() {
+        if (isEmpty()) {
+            return null;
+        }
+        E item = front.data;
+        front = front.next;
+        if (front == null) {
+            back = null;
+        }
+        size--;
+        return item;
+    }
 
+    // @Override
+    public E peek() {
+        return isEmpty() ? null : front.data;
+    }
+
+    // @Override
     public boolean isEmpty() {
-    return (firstNode == null) && (lastNode == null);
+        return size == 0;
     }
 
+    // @Override
+    public int size() {
+        return size;
+    }
+
+    // @Override
     public void clear() {
-    firstNode = null;
-    lastNode = null;
-    } 
-
-    public Iterator<T> getIterator() {
-    return new LinkedQueueIterator();
+        front = null;
+        back = null;
+        size = 0;
     }
 
-    private class LinkedQueueIterator implements Iterator<T> {
-
-    private Node currentNode;
-
-    public LinkedQueueIterator() {
-    currentNode = firstNode;
+    // @Override
+    public boolean offer(E item) {
+        enqueue(item);
+        return true;
     }
 
-    @Override
-    public boolean hasNext() {
-        return currentNode != null;
+    // @Override
+    public E poll() {
+        return dequeue();
     }
 
-    @Override
-    public T next() {
-    if (hasNext()) {
-        T returnData = currentNode.data;
-        currentNode = currentNode.next;
-        return returnData;
-    } else {
-        return null;
+    // @Override
+    public E element() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return front.data;
     }
+
+    // @Override
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        int index = 0;
+        for (Node<E> current = front; current != null; current = current.next) {
+            array[index++] = current.data;
+        }
+        return array;
     }
+
+    // @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private Node<E> current = front;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                E data = current.data;
+                current = current.next;
+                return data;
+            }
+        };
+    }
+
+    // public static void main(String[] args) {
+    //     LinkedQueue<Integer> queue = new LinkedQueue<>();
+    //     queue.enqueue(1);
+    //     queue.enqueue(2);
+    //     queue.enqueue(3);
+
+    //     System.out.println("Queue size: " + queue.size());
+    //     System.out.println("Front element: " + queue.peek());
+    //     System.out.println("Dequeue: " + queue.dequeue());
+    //     System.out.println("Queue size after dequeue: " + queue.size());
+    //     System.out.println("Is queue empty? " + queue.isEmpty());
+    // }
 }
-
-private class Node {
-
-    private T data; 
-    private Node next; 
-
-    private Node(T data) {
-    this.data = data;
-    this.next = null;
-    } 
-
-    private Node(T data, Node next) {
-    this.data = data;
-    this.next = next;
-    } 
-    } 
-} 
