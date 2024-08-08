@@ -20,7 +20,7 @@ public class YesNoValidation {
      *
      * @return the valid user choice, 'Y' for Yes or 'N' for No
      */
-    public static char inputYN() {
+    public static char inputChoice() {
         char input;
         boolean hasError;
 
