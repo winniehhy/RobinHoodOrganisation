@@ -37,9 +37,10 @@ public class YesNoValidation {
                     System.out.println("Please enter 'Y' or 'N' only!");
                     hasError = true;
                 }
+                
             } catch (Exception ex) {
                 // Handle any unexpected exceptions
-                System.out.println("An error occurred. Please enter 'Y' or 'N' only!");
+                System.out.println("Please enter 'Y' or 'N' only!");
                 scanner.nextLine(); // Clear the invalid input
                 hasError = true;
             }
