@@ -1,5 +1,5 @@
 
-package ADT;
+package utility;
 
 import java.util.Iterator;
 

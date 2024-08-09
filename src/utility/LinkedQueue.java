@@ -1,9 +1,9 @@
-package ADT;
+package utility;
 
 import java.util.Iterator;
-import java.util.Scanner;
+//import java.util.Scanner;
 import java.util.NoSuchElementException;
-import java.util.InputMismatchException;
+//import java.util.InputMismatchException;
 
 /**
  * A linked implementation of the Queue ADT.
@@ -27,17 +27,19 @@ public class LinkedQueue<E> implements Queue<E> {
             this.next = null;
         }
     }
-
+    
     public LinkedQueue() {
         initialize();
     }
 
+    @Override
     public void initialize() {
         front = null;
         back = null;
         size = 0;
     }
 
+    @Override
     public void enqueue(E item) {
         Node<E> newNode = new Node<>(item);
         if (isEmpty()) {
@@ -49,6 +51,7 @@ public class LinkedQueue<E> implements Queue<E> {
         size++;
     }
 
+    @Override
     public E dequeue() {
         if (isEmpty()) {
             return null;
@@ -62,33 +65,40 @@ public class LinkedQueue<E> implements Queue<E> {
         return item;
     }
 
+    @Override
     public E peek() {
         return isEmpty() ? null : front.data;
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public void clear() {
         front = null;
         back = null;
         size = 0;
     }
 
+    @Override
     public boolean offer(E item) {
         enqueue(item);
         return true;
     }
 
+    @Override
     public E poll() {
         return dequeue();
     }
 
+    @Override
     public E element() {
         if (isEmpty()) {
             throw new NoSuchElementException();
@@ -96,6 +106,7 @@ public class LinkedQueue<E> implements Queue<E> {
         return front.data;
     }
 
+    @Override
     public Object[] toArray() {
         Object[] array = new Object[size];
         int index = 0;
@@ -105,6 +116,7 @@ public class LinkedQueue<E> implements Queue<E> {
         return array;
     }
 
+    @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             private Node<E> current = front;
