@@ -9,7 +9,7 @@ import java.util.Scanner;
  * 
  * @author Ho Zhi Xuen
  */
-public class YesNoValidation {
+public class StringValidation {
 
     // Static Scanner instance for reading user input
     private static final Scanner scanner = new Scanner(System.in);
@@ -20,7 +20,7 @@ public class YesNoValidation {
      *
      * @return the valid user choice, 'Y' for Yes or 'N' for No
      */
-    public static char inputChoice() {
+    public static char inputYN() {
         char input;
         boolean hasError;
 
