@@ -24,6 +24,14 @@ public class Donation {
         this.distributionDate = distributionDate;
     }
 
+    public Donation(Donation other) {
+        this.donorName = other.donorName;
+        this.doneeName = other.doneeName;
+        this.amount = other.amount;
+        this.donationDate = other.donationDate;
+        this.distributionDate = other.distributionDate;
+    }
+
     public String getDonorName() {
         return donorName;
     }
@@ -66,7 +74,7 @@ public class Donation {
 
     @Override
     public String toString() {
-        return "Distributions [" +
+        return "[" +
                 "Donor: " + donorName +
                 ", Donee: " + doneeName +
                 ", Amount: RM " + amount +
