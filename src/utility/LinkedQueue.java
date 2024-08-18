@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
  * 
  * @author Heng Han Yee
  */
-public class LinkedQueue<E> implements Queue<E> {
+public class LinkedQueue<E> implements Queue<E>, Iterable<E> {
     private Node<E> front;
     private Node<E> back;
     private int size;
