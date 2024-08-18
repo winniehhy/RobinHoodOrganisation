@@ -34,28 +34,7 @@ public class DonationManagementUI {
         return userChoice;
     }
 
-    public char getInsufficientConfirmation() {
-        System.out.println("There is an insufficient amount to be donated. Continue?");
-        char userChoice = StringValidation.inputYN();
-        return userChoice;
-    }
-
-    public int getModifyMenuChoice() {
-        System.out.print("\033[H\033[2J");
-        System.out.println("Modify Donations");
-        System.out.println("[1] Undo Donation");
-        System.out.println("[2] Edit Donor Name");
-        System.out.println("[3] Edit Donation Amount");
-        System.out.println("[4] Back");
-        int userChoice = IntValidation.inputChoice(4);
-        return userChoice;
-    }
-
-    public char getConfirmation() {
-        System.out.println("This action cannot be undone. Continue?");
-        char userChoice = StringValidation.inputYN();
-        return userChoice;
-    }
+    
 
     public void displayContinue() {
         System.out.print("\n\nPress Enter to continue...");
