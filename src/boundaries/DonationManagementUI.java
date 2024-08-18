@@ -51,16 +51,6 @@ public class DonationManagementUI {
         return userChoice;
     }
 
-    public int getTrackDonationsMenuChoice() {
-        System.out.print("\033[H\033[2J");
-        System.out.println("Track Donations");
-        System.out.println("[1] Track by Donor Name");
-        System.out.println("[2] Track by Donee Name");
-        System.out.println("[3] Back");
-        int userChoice = IntValidation.inputChoice(3);
-        return userChoice;
-    }
-
     public char getConfirmation() {
         System.out.println("This action cannot be undone. Continue?");
         char userChoice = StringValidation.inputYN();
