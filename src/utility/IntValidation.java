@@ -16,39 +16,68 @@ public class IntValidation {
     private static final Scanner scanner = new Scanner(System.in);
   
      /**
-     * Prompts the user to enter an integer choice and validates the input.
-     * The valid input must be within the range from 1 to the specified upper limit (inclusive).
-     * If the input is valid, it returns the user's choice. Otherwise, it prompts the user again until a valid input is received.
+     * Prompts the user to enter a choice within a specified range and validates the input.
+     * If the input is invalid or out of range, the user is prompted again.
      *
-     * @param range the upper limit of the valid input range (inclusive)
-     * @return the valid user choice within the specified range
+     * @param range  The upper bound of the valid input range (inclusive). The lower bound is always 1.
+     * @return       The validated choice entered by the user.
      */
     public static int inputChoice(int range) {
         int userChoice = 0;
-        boolean hasError;
-    
-        do {
-            hasError = false;
+        boolean validInput = false;
+
+        while (!validInput) {
             System.out.print("Enter choice: ");
             try {
-                userChoice = scanner.nextInt();
-    
+                userChoice = scanner.nextInt(); // Read the user input
+
+                // Validate that the choice is within the acceptable range
                 if (userChoice >= 1 && userChoice <= range) {
-                    // Input is within the valid range
-                    break;
+                    validInput = true; // Valid choice, exit loop
                 } else {
-                    // Input is outside the valid range
-                    throw new IllegalArgumentException();
+                    // Choice is out of range
+                    System.out.println("Please enter a value between 1 and " + range + ".");
                 }
-    
-            } catch (IllegalArgumentException | InputMismatchException ex) {
-                // Handle invalid input, either out of range or non-integer
-                System.out.println("Please enter a value between 1 and " + range + "!");
-                scanner.nextLine(); // Clear the invalid input
-                hasError = true;
+            } catch (InputMismatchException ex) {
+                // Handle case where input is not an integer
+                System.out.println("Invalid input. Please enter an integer value.");
+                scanner.next(); // Clear the invalid input from the scanner buffer
             }
-        } while (hasError);
+        }
+
+        return userChoice; // Return the validated user choice
+    }
     
-        return userChoice;
+    /**
+     * Prompts the user for an integer input and validates it based on whether negative numbers are allowed.
+     * If the input is invalid or does not meet the criteria, the user is prompted again.
+     *
+     * @param displayText     The message to be displayed to the user for input.
+     * @param allowNegatives  A flag indicating whether negative integers are permitted.
+     * @return                The validated integer input from the user.
+     */
+    public static int integerValidation(String displayText, boolean allowNegatives) {
+        int integer = 0;
+        boolean valid = false;
+
+        while (!valid) {
+            System.out.print(displayText); // Display the prompt message to the user
+            try {
+                integer = scanner.nextInt(); // Read the integer input from the user
+
+                // Check if negative numbers are allowed and if the input meets the criteria
+                if (!allowNegatives && integer < 0) {
+                    System.out.println("Please enter positive integers only.");
+                } else {
+                    valid = true; // Input is valid, exit the loop
+                }
+            } catch (InputMismatchException e) {
+                // Handle the case where the input is not an integer
+                System.out.println("Invalid input. Please enter an integers value.");
+                scanner.next(); // Clear the invalid input
+            }
+        }
+
+        return integer; // Return the validated integer
     }
 }

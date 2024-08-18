@@ -1,6 +1,9 @@
 package utility;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.text.ParseException;
 
 /**
  * Utility class for validating character inputs.
@@ -21,7 +24,7 @@ public class StringValidation {
      * @return the valid user choice, 'Y' for Yes or 'N' for No
      */
     public static char inputYN() {
-        char input;
+        char input = ' ';
         boolean hasError;
 
         do {
@@ -47,5 +50,60 @@ public class StringValidation {
         } while (hasError);
 
         return input;
+    }
+    
+    /**
+     * Prompts the user for a string input and validates that it contains only alphabetic characters.
+     * If the input is invalid, the user is prompted again.
+     *
+     * @param displayText  The message to be displayed to the user for input.
+     * @return             The validated string containing only alphabetic characters.
+     */
+    public static String alphabetValidation(String displayText) {
+        String input = "";
+        boolean valid = false;
+
+        while (!valid) {
+            System.out.print(displayText); // Display the prompt message to the user
+            input = scanner.nextLine().trim(); // Read the input and trim any leading/trailing spaces
+
+            // Validate that the input contains only alphabetic characters
+            if (input.matches("[a-zA-Z ]+")) {
+                valid = true; // Input is valid, exit the loop
+            } else {
+                System.out.println("Invalid input. Please enter only alphabetic characters.");
+            }
+        }
+
+        return input; // Return the validated input
+    }
+    
+    /**
+     * Prompts the user for a date input and validates it against the specified date format.
+     * If the input is invalid, the user is prompted again.
+     *
+     * @param displayText  The message to be displayed to the user for input.
+     * @return             The validated date as a Date object.
+     */
+    public static Date dateValidation(String displayText) {
+        Date date = null;
+        boolean valid = false;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormat.setLenient(false); // Ensure strict date validation
+
+        while (!valid) {
+            System.out.print(displayText); // Display the prompt message to the user
+            String input = scanner.nextLine().trim(); // Read the input and trim any leading/trailing spaces
+
+            // Validate the input against the date format
+            try {
+                date = dateFormat.parse(input); // Attempt to parse the input as a date
+                valid = true; // Input is valid, exit the loop
+            } catch (ParseException e) {
+                System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy format.");
+            }
+        }
+
+        return date; // Return the validated Date object
     }
 }

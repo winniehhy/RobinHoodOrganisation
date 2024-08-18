@@ -1,6 +1,6 @@
 package boundaries;
 
-import utiliy.*;
+import utility.*;
 import java.util.Scanner;
 import java.io.IOException;
 
