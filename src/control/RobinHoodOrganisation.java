@@ -15,7 +15,7 @@ public class RobinHoodOrganisation {
 
         switch (userChoice) {
             case 1:
-                
+                DonationManagement.main(null);
                 break;
             case 2:
                 DonationDistribution.main(null);
