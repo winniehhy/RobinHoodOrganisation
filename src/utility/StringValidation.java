@@ -106,4 +106,23 @@ public class StringValidation {
 
         return date; // Return the validated Date object
     }
+
+    public static String validateNonEmptyInput() {
+        String input = "";
+        boolean valid = false;
+    
+        while (!valid) {
+            input = scanner.nextLine().trim(); // Read input and trim any leading/trailing spaces
+    
+            // Validate that the input is not empty
+            if (!input.isEmpty()) {
+                valid = true; // Input is valid, exit the loop
+            } else {
+                System.out.println("Input cannot be empty. Please enter a valid input.");
+            }
+        }
+    
+        return input; // Return the validated non-empty string
+    }
+    
 }

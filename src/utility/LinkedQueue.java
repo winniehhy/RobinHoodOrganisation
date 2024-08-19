@@ -1,9 +1,7 @@
 package utility;
 
 import java.util.Iterator;
-//import java.util.Scanner;
 import java.util.NoSuchElementException;
-//import java.util.InputMismatchException;
 
 /**
  * A linked implementation of the Queue ADT.
@@ -137,40 +135,14 @@ public class LinkedQueue<E> implements Queue<E>, Iterable<E> {
             }
         };
     }
-
-    // public static void main(String[] args) {
-    //     Scanner scanner = new Scanner(System.in);
-    //     LinkedQueue<Integer> queue = new LinkedQueue<>();
-
-    //     System.out.println("Enter the number of elements to enqueue:");
-    //     int numberOfElements = 0;
-    //     try {
-    //         numberOfElements = scanner.nextInt();
-    //     } catch (InputMismatchException e) {
-    //         System.out.println("Invalid input. Please enter a valid number.");
-    //         return;
-    //     }
-
-    //     System.out.println("Enter " + numberOfElements + " elements to enqueue:");
-    //     for (int i = 0; i < numberOfElements; i++) {
-    //         try {
-    //             int element = scanner.nextInt();
-    //             queue.enqueue(element);
-    //         } catch (InputMismatchException e) {
-    //             System.out.println("Invalid input. Please enter a valid integer.");
-    //             scanner.next(); // Clear the invalid input
-    //             i--; // Retry this iteration
-    //         }
-    //     }
-
-    //     System.out.println("Queue size: " + queue.size());
-    //     System.out.println("First element: " + queue.peek());
-
-    //     System.out.println("Dequeue: " + queue.dequeue());
-    //     System.out.println("Queue size after dequeue: " + queue.size());
-    //     System.out.println("New first element after dequeue: " + queue.peek());
-    //     System.out.println("Is queue empty? " + queue.isEmpty());
-
-    //     scanner.close();
-    // }
+    
+    // Method to check if the queue contains a specific item
+    public boolean contains(E item) {
+        for (Node<E> current = front; current != null; current = current.next) {
+            if (current.data.equals(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
