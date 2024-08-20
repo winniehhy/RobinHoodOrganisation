@@ -1,5 +1,7 @@
 package entity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -12,6 +14,7 @@ public class Donation {
     private int amount;
     private Date donationDate;
     private Date distributionDate;
+    private int donationType; //new
 
     public Donation() {
     }

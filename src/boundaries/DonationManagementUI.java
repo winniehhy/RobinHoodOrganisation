@@ -6,6 +6,7 @@ import utility.StringValidation;
 import java.util.Scanner;
 import java.util.Date;
 
+
 /**
  * Donation Management UI class
  * Author: Heng Han Yee
@@ -38,7 +39,6 @@ public class DonationManagementUI {
 
         // Set donation date
         donation.setDonationDate(getDonationDate());
-
 
         return donation;
     }
@@ -90,15 +90,15 @@ public class DonationManagementUI {
         System.out.println(message);
     }
 
-    public int getAmendChoice() {
-        System.out.println("What would you like to amend?");
-        System.out.println("[1] Donor Name");
-        System.out.println("[2] Donation Amount");
-        System.out.println("[3] Donation Date");
-        System.out.println("[4] Back");
-        int amendChoice = IntValidation.inputChoice(4);
-        return amendChoice;
-    }
+    // public int getAmendChoice() {
+    //     System.out.println("What would you like to amend?");
+    //     System.out.println("[1] Donor Name");
+    //     System.out.println("[2] Donation Amount");
+    //     System.out.println("[3] Donation Date");
+    //     System.out.println("[4] Back");
+    //     int amendChoice = IntValidation.inputChoice(4);
+    //     return amendChoice;
+    // }
 
     public int getFilterCriteria() {
         System.out.println("Filter by:");

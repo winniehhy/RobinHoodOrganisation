@@ -3,11 +3,12 @@ package control;
 import entity.*;
 import utility.*;
 import boundaries.DonationManagementUI;
+
+import java.util.Date;
 import java.util.Scanner;
-// import java.io.BufferedWriter;
-// import java.io.BufferedWriter;
-// import java.io.FileWriter;
-// import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -15,7 +16,7 @@ import java.util.Scanner;
  */
 public class DonationManagement {
     static Scanner scanner = new Scanner(System.in);
-    static DonationManagementUI managementUI = new DonationManagementUI();
+    public static DonationManagementUI managementUI = new DonationManagementUI();
 
     // Queues for managing donations of different types
     static LinkedQueue<Donation> cashDonationQueue = new LinkedQueue<>();
@@ -40,7 +41,7 @@ public class DonationManagement {
                 break;
             default:
                 managementUI.showErrorMessage("Invalid donation type.");
-                return;
+                return ;
         }
 
         managementUI.showSuccessMessage();
@@ -48,8 +49,56 @@ public class DonationManagement {
     }
 
     public static void removeDonation(LinkedQueue<Donation> donationQueue) {
-        System.out.println(" Remove successfully.");
+        // Check if the queue is empty
+        if (donationQueue.isEmpty()) {
+            System.out.println("No donations available to remove.");
+            return;
+        }
+        // Prompt user for donor name
+        System.out.print("Enter the donor name to remove donations: ");
+        String donorNameToRemove = scanner.nextLine();
+        // Flag to check if any donation was found for the donor
+        boolean found = false;
+        // Create a temporary queue to hold donations while filtering
+        LinkedQueue<Donation> tempQueue = new LinkedQueue<>();
+        // Display all donations for the given donor and copy other donations to tempQueue
+        while (!donationQueue.isEmpty()) {
+            Donation donation = donationQueue.dequeue();
+            if (donation.getDonorName().equalsIgnoreCase(donorNameToRemove)) {
+                // If matching donor name, display the donation details
+                System.out.println("Donation Found:");
+                System.out.println("Donation Type: " + getDonationTypeName(donation));
+                System.out.println("Donation Date: " + donation.getDonationDate());
+                System.out.println("Donor Name: " + donation.getDonorName());
+                System.out.print("Do you want to delete this donation? (Y/N): ");
+                char confirmation = scanner.nextLine().toUpperCase().charAt(0);
+    
+                if (confirmation == 'Y') {
+                    System.out.println("Donation item had been successfully removed.");
+                    found = true;
+                    // Do not enqueue back to the original queue
+                    continue; // Skip adding this donation to the tempQueue
+                } else {
+                    System.out.println("Donation item was not removed.");
+                    // Add donation back to the tempQueue for re-processing
+                    tempQueue.enqueue(donation);
+                }
+            } else {
+                // Enqueue donations not matching the donor name
+                tempQueue.enqueue(donation);
+            }
+        }
+    
+        // Refill the original queue with the remaining donations from tempQueue
+        while (!tempQueue.isEmpty()) {
+            donationQueue.enqueue(tempQueue.dequeue());
+        }
+    
+        if (!found) {
+            System.out.println("No donations found for the given donor name.");
+        }
     }
+    
 
     public static void searchDonation(LinkedQueue<Donation> donationQueue) {
         System.out.println(" Searching for details.");
@@ -61,10 +110,8 @@ public class DonationManagement {
             managementUI.showErrorMessage("No donations available to amend.");
             return;
         }
-    
         // Assuming we amend the first donation in the queue for simplicity
         Donation donation = donationQueue.peek();
-    
         // Display current donation details
         System.out.println("Current Donation Information:");
         System.out.println("Donor Name: " + donation.getDonorName());
@@ -78,45 +125,42 @@ public class DonationManagement {
         if (confirmation == 'Y' || confirmation == 'y') {
             // Remove the old donation (simulate clearing the record)
             donationQueue.dequeue();
-    
-            // Prompt for new donor information
-            System.out.println("Please enter new donation details:");
-    
-            donation.setDonorName(managementUI.getDonorName());
-            donation.setDonationDate(managementUI.getDonationDate());
-    
-            // Get the new donation type and add the donation back to the appropriate queue
-            int donationType = managementUI.getDonationType();
-            switch (donationType) {
+            // Get new donation details
+            String newDonorName = managementUI.getDonorName();
+            Date newDonationDate = managementUI.getDonationDate();
+            int newDonationType = managementUI.getDonationType();
+            // Create a new donation with updated details
+            Donation newDonation = new Donation();
+            
+            // Add the new donation back to the appropriate queue
+            switch (newDonationType) {
                 case 1:
-                    cashDonationQueue.enqueue(donation);
+                    cashDonationQueue.enqueue(newDonation);
                     break;
                 case 2:
-                    bookDonationQueue.enqueue(donation);
+                    bookDonationQueue.enqueue(newDonation);
                     break;
                 case 3:
-                    toyDonationQueue.enqueue(donation);
+                    toyDonationQueue.enqueue(newDonation);
                     break;
                 default:
                     managementUI.showErrorMessage("Invalid donation type.");
                     return;
             }
-    
+            
             // Display updated donation details
             System.out.println("Updated Donation Information:");
-            System.out.println("Donor Name: " + donation.getDonorName());
-            System.out.println("Donation Date: " + donation.getDonationDate());
-            System.out.println("Donation Type: " + getDonationTypeName(donation));
-    
+            System.out.println("Donor Name: " + newDonation.getDonorName());
+            System.out.println("Donation Date: " + newDonation.getDonationDate());
+            System.out.println("Donation Type: " + getDonationTypeName(newDonation));
             managementUI.showSuccessMessage();
         } else {
             System.out.println("No changes were made.");
         }
-    
         managementUI.displayContinue();
     }
     
-    private static String getDonationTypeName(Donation donation) {
+    public static String getDonationTypeName(Donation donation) {
         if (cashDonationQueue.contains(donation)) {
             return "Cash";
         } else if (bookDonationQueue.contains(donation)) {
@@ -197,4 +241,5 @@ public class DonationManagement {
             }
         }
     }
+    
 }
