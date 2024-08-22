@@ -80,4 +80,5 @@ public class IntValidation {
 
         return integer; // Return the validated integer
     }
+
 }

@@ -1,12 +1,20 @@
 package control;
 
 import boundaries.*;
+import entity.Donation;
+import utility.DoublyLinkedQueue;
 
 /**
  *
  * @author Ho Zhi Xuen
  */
 public class RobinHoodOrganisation {
+    public static DoublyLinkedQueue<Donation> cashDonationQueue = new DoublyLinkedQueue<>();
+    public static DoublyLinkedQueue<Donation> cashDistributionQueue = new DoublyLinkedQueue<>();
+    public static DoublyLinkedQueue<Donation> bookDonationQueue = new DoublyLinkedQueue<>();
+    public static DoublyLinkedQueue<Donation> bookDistributionQueue = new DoublyLinkedQueue<>();
+    public static DoublyLinkedQueue<Donation> toyDonationQueue = new DoublyLinkedQueue<>();
+    public static DoublyLinkedQueue<Donation> toyDistributionQueue = new DoublyLinkedQueue<>();
 
     public static void main(String[] args) {
         RobinHoodOrganisationUI mainUI = new RobinHoodOrganisationUI();

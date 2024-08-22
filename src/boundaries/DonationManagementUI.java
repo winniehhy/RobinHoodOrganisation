@@ -1,22 +1,18 @@
 package boundaries;
 
 import entity.Donation;
-import utility.IntValidation;
-import utility.StringValidation;
+import utility.DoublyLinkedQueue;
 import java.util.Scanner;
-import java.util.Date;
-
 
 /**
  * Donation Management UI class
  * Author: Heng Han Yee
  */
 public class DonationManagementUI {
-
     private Scanner scanner = new Scanner(System.in);
 
     public int getManagementChoice() {
-        System.out.print("\033[H\033[2J");
+        clearScreen();
         System.out.println("Donation Management Menu");
         System.out.println("[1] Add New Donation");
         System.out.println("[2] Remove Donation");
@@ -27,100 +23,108 @@ public class DonationManagementUI {
         System.out.println("[7] Filter Donations");
         System.out.println("[8] Display Summary Report");
         System.out.println("[9] Back");
-        int userChoice = IntValidation.inputChoice(9);
-        return userChoice;
+        return utility.IntValidation.inputChoice(9);
     }
 
-    public Donation createDonation() {
-        Donation donation = new Donation();
-
-        // Set donor name
-        donation.setDonorName(getDonorName());
-
-        // Set donation date
-        donation.setDonationDate(getDonationDate());
-
-        return donation;
+    public void showAddDonationPrompt() {
+        clearScreen();
+        System.out.println("=== Add New Donation ===");
     }
 
-    public String getDonorName() {
-        System.out.print("\033[H\033[2J");
-        System.out.println("Adding New Donation\n-------------------\n ");
-        System.out.print("Enter donor name: ");
-        return scanner.nextLine();
+    public String showRemoveDonationPrompt() {
+        System.out.print("Enter the donor's name to remove: ");
+        return scanner.nextLine().trim();  
     }
 
-    public int getDonationType() {
-        int donationType = 0;
-        boolean validType = false;
+    public void showSearchDonationPrompt() {
+        clearScreen();
+        System.out.println("=== Search Donation Details ===");
+    }
     
-        while (!validType) {
-            System.out.println("[1] Cash");
-            System.out.println("[2] Book");
-            System.out.println("[3] Toy");
-            System.out.print("Enter donation type: ");  // Use print instead of println
-    
-            if (scanner.hasNextInt()) {
-                donationType = scanner.nextInt();
-                scanner.nextLine(); // Consume the leftover newline character
-    
-                if (donationType >= 1 && donationType <= 3) {
-                    validType = true;
-                } else {
-                    System.out.println("Invalid donation type. Please enter a number between 1 and 3.");
-                }
-            } else {
-                System.out.println("Invalid input. Please enter a number.");
-                scanner.nextLine(); // Consume the invalid input
-            }
+    public void showDonationDetails(Donation donation) {
+        System.out.println("Donation Details:");
+        System.out.println("-----------------");
+        System.out.println("Donor Name:        " + donation.getDonorName());
+        System.out.println("Donee Name:        " + donation.getDoneeName());
+        System.out.println("Amount:            RM " + donation.getAmount());
+        System.out.println("Donation Date:     " + donation.getDonationDate());
+        System.out.println("Distribution Date: " + donation.getDistributionDate());
+    }
+
+    public void showAmendDonationPrompt() {
+        clearScreen();
+        System.out.println("=== Amend Donation Details ===");
+    }
+
+    public void showDonationQueue(DoublyLinkedQueue<Donation> queue) {
+        clearScreen();
+        System.out.println("=== Current Available Donation ===");
+        for (Donation donation : queue) {
+            System.out.println(donation);
         }
-        return donationType;
     }
 
-    public Date getDonationDate() {
-        return StringValidation.dateValidation("Enter donation date (dd-MM-yyyy): ");
+    public int getTrackDonationChoice() {
+        clearScreen();
+        System.out.println("=== Track Donation Items ===");
+        System.out.println("[1] Track by Donor Name");
+        System.out.println("[2] Track by Donation Type");
+        System.out.println("[3] Track by Donation Date");
+        System.out.println("[4] Track Current Queue");
+        return utility.IntValidation.inputChoice(4);
     }
 
-    public void showSuccessMessage() {
-        System.out.println("\nDonation added successfully.");
-        System.out.flush();
+    public void showTrackDonationPrompt(int choice) {
+        switch (choice) {
+            case 1:
+                System.out.println("Enter Donor Name:");
+                break;
+            case 2:
+                System.out.println("Enter Donation Type:");
+                break;
+            case 3:
+                System.out.println("Enter Donation Date (yyyy-mm-dd):");
+                break;
+            case 4:
+                clearScreen();
+                System.out.println("=== Current Donation Queue ===");
+                break;
+        }
+    }
+
+    public void showFirstAndLastInQueue(Donation firstDonation, Donation lastDonation) {
+        clearScreen();
+        System.out.println("=== First Donation in Queue ===");
+        showDonationDetails(firstDonation);
+        System.out.println("\n=== Last Donation in Queue ===");
+        showDonationDetails(lastDonation);
+    }
+
+
+    public void showSuccessMessage(String message) {
+        System.out.println(message);
     }
 
     public void showErrorMessage(String message) {
         System.out.println(message);
     }
 
-    // public int getAmendChoice() {
-    //     System.out.println("What would you like to amend?");
-    //     System.out.println("[1] Donor Name");
-    //     System.out.println("[2] Donation Amount");
-    //     System.out.println("[3] Donation Date");
-    //     System.out.println("[4] Back");
-    //     int amendChoice = IntValidation.inputChoice(4);
-    //     return amendChoice;
-    // }
-
-    public int getFilterCriteria() {
-        System.out.println("Filter by:");
-        System.out.println("[1] Donation Type");
-        System.out.println("[2] Donation Date");
-        System.out.println("[3] Donor Name");
-        System.out.println("[4] Back");
-        int filterChoice = IntValidation.inputChoice(4);
-        return filterChoice;
-    }
-
-    public char getConfirmation() {
-        System.out.println("This action cannot be undone. Continue?");
-        char userChoice = StringValidation.inputYN();
-        return userChoice;
+    public char getConfirmation(String message) {
+        System.out.println(message);
+        char confirmation = scanner.nextLine().trim().toUpperCase().charAt(0);
+        return confirmation;
     }
 
     public void displayContinue() {
-        System.out.print("\n\nPress Enter to continue...");
+        System.out.print("\nPress Enter to continue...");
         try {
             System.in.read();
         } catch (Exception e) {
         }
+    }
+
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

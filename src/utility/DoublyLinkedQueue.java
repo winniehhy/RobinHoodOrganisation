@@ -101,6 +101,22 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
             size--;
             return data;
         }
+
+         // Get the first element in the queue
+    public E getFirst() {
+        if (front == null) {
+            throw new IllegalStateException("Queue is empty");
+        }
+        return front.data;
+    }
+
+    // Get the last element in the queue
+    public E getLast() {
+        if (rear == null) {
+            throw new IllegalStateException("Queue is empty");
+        }
+        return rear.data;
+    }
     
         public boolean isEmpty() {
             return size == 0;
@@ -182,7 +198,54 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
                     throw new UnsupportedOperationException();
                 }
             };
-}
+        }
+        public boolean contains(E data) {
+            Node current = front;
+            while (current != null) {
+                if (current.data.equals(data)) {
+                    return true;
+                }
+                current = current.next;
+            }
+            return false;
+        }
+
+        public boolean remove(E item) {
+            Node current = front;
+    
+            // Traverse the queue to find the item
+            while (current != null) {
+                if (current.data.equals(item)) {
+                    // If it's the only element in the queue
+                    if (current == front && current == rear) {
+                        front = null;
+                        rear = null;
+                    } else if (current == front) {
+                        // If it's the front element
+                        front = front.next;
+                        if (front != null) {
+                            front.prev = null;
+                        }
+                    } else if (current == rear) {
+                        // If it's the rear element
+                        rear = rear.prev;
+                        if (rear != null) {
+                            rear.next = null;
+                        }
+                    } else {
+                        // If it's somewhere in the middle
+                        current.prev.next = current.next;
+                        current.next.prev = current.prev;
+                    }
+                    size--;
+                    return true; // Element found and removed
+                }
+                current = current.next;
+            }
+            return false; // Element not found
+        }
+
+        
 }
     
 

@@ -15,22 +15,7 @@ public class DonationDistribution {
     static SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
     static DonationDistributionUI distributionUI = new DonationDistributionUI();
 
-    //remove later
-    static LinkedQueue<Donation> cashDonationQueue = new LinkedQueue<>();
-    static LinkedQueue<Donation> cashDistributionQueue = new LinkedQueue<>();
-    static LinkedQueue<Donation> bookDonationQueue = new LinkedQueue<>();
-    static LinkedQueue<Donation> bookDistributionQueue = new LinkedQueue<>();
-    static LinkedQueue<Donation> toyDonationQueue = new LinkedQueue<>();
-    static LinkedQueue<Donation> toyDistributionQueue = new LinkedQueue<>();
-
-
-
-
-
-
-
-
-    public static void distributeDonations(LinkedQueue<Donation> donationQueue, LinkedQueue<Donation> distributionQueue) {
+    public static void distributeDonations(DoublyLinkedQueue<Donation> donationQueue, DoublyLinkedQueue<Donation> distributionQueue) {
         String doneeName = StringValidation.alphabetValidation("Enter donee name: ");
         int amount = IntValidation.integerValidation("Enter amount: ", false);
 
@@ -66,9 +51,18 @@ public class DonationDistribution {
                 amount = 0;
             }
         }
+
+        //printing
+        for (Donation donation : donationQueue){
+            System.out.println(donation.toString());
+        }
+
+        for (Donation donation : distributionQueue){
+            System.out.println(donation.toString());
+        }
     }
 
-    public static void modifyDistributions(LinkedQueue<Donation> donationQueue, LinkedQueue<Donation> distributionQueue) {
+    public static void modifyDistributions(DoublyLinkedQueue<Donation> donationQueue, DoublyLinkedQueue<Donation> distributionQueue) {
         DonationDistributionUI distributionUI = new DonationDistributionUI();
         int userChoice = distributionUI.getModifyMenuChoice();
 
@@ -88,10 +82,10 @@ public class DonationDistribution {
         }
     }
 
-    public static void removeDistributions(LinkedQueue<Donation> distributionQueue) {
-}
+    public static void removeDistributions(DoublyLinkedQueue<Donation> distributionQueue) {
+    }
 
-    public static void trackDistributions(LinkedQueue<Donation> distributionQueue) {
+    public static void trackDistributions(DoublyLinkedQueue<Donation> distributionQueue) {
         DonationDistributionUI distributionUI = new DonationDistributionUI();
         int userChoice = distributionUI.getTrackDistributionsMenuChoice();
 
@@ -108,49 +102,44 @@ public class DonationDistribution {
         }
     }
 
-    public static void displaySummary(LinkedQueue<Donation> distributionQueue) {
+    public static void displaySummary(DoublyLinkedQueue<Donation> distributionQueue) {
     }
 
-    public static LinkedQueue<Donation> getDonationQueue(int distributionType){
+    public static DoublyLinkedQueue<Donation> getDonationQueue(int distributionType){
         switch (distributionType) {
             case 1:
-                return cashDonationQueue;
+                return RobinHoodOrganisation.cashDonationQueue;
             case 2:
-                return bookDonationQueue;
+                return RobinHoodOrganisation.bookDonationQueue;
             case 3:
-                return toyDonationQueue;
+                return RobinHoodOrganisation.toyDonationQueue;
         }
         return null;
     }
 
-    public static LinkedQueue<Donation> getDistributionQueue(int distributionType){
+    public static DoublyLinkedQueue<Donation> getDistributionQueue(int distributionType){
         switch (distributionType) {
             case 1:
-                return cashDistributionQueue;
+                return RobinHoodOrganisation.cashDistributionQueue;
             case 2:
-                return bookDistributionQueue;
+                return RobinHoodOrganisation.bookDistributionQueue;
             case 3:
-                return toyDistributionQueue;
+                return RobinHoodOrganisation.toyDistributionQueue;
         }
         return null;
     }
 
     public static void main(String[] args) {
-        
         // Add donations to the queue directly
         try {
-            cashDonationQueue.enqueue(new Donation("Wishwell Organization", null, 5000, formatter.parse("09-08-2024"), null));
-            cashDonationQueue.enqueue(new Donation("Mickey Org", null, 2000, formatter.parse("10-08-2024"), null));
-            cashDonationQueue.enqueue(new Donation("Simon Lee", null, 7500, formatter.parse("12-08-2024"), null));
-            cashDonationQueue.enqueue(new Donation("Alvin Teoh", null, 500, formatter.parse("14-08-2024"), null));
-            cashDonationQueue.enqueue(new Donation("Annie Pie Charity", null, 10000, formatter.parse("16-08-2024"), null));
+            RobinHoodOrganisation.cashDonationQueue.enqueue(new Donation("Wishwell Organization", null, 5000, formatter.parse("09-08-2024"), null));
+            RobinHoodOrganisation.cashDonationQueue.enqueue(new Donation("Mickey Org", null, 2000, formatter.parse("10-08-2024"), null));
+            RobinHoodOrganisation.cashDonationQueue.enqueue(new Donation("Simon Lee", null, 7500, formatter.parse("12-08-2024"), null));
+            RobinHoodOrganisation.cashDonationQueue.enqueue(new Donation("Alvin Teoh", null, 500, formatter.parse("14-08-2024"), null));
+            RobinHoodOrganisation.cashDonationQueue.enqueue(new Donation("Annie Pie Charity", null, 10000, formatter.parse("16-08-2024"), null));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
-
-        
 
         int userChoice = distributionUI.getMainMenuChoice();
         int distributionType = 0;
@@ -163,8 +152,8 @@ public class DonationDistribution {
             }
         }
 
-        LinkedQueue<Donation> donationQueue = getDonationQueue(distributionType);
-        LinkedQueue<Donation> distributionQueue = getDistributionQueue(distributionType);
+        DoublyLinkedQueue<Donation> donationQueue = getDonationQueue(distributionType);
+        DoublyLinkedQueue<Donation> distributionQueue = getDistributionQueue(distributionType);
 
         switch (userChoice) {
             case 1:
@@ -187,14 +176,3 @@ public class DonationDistribution {
         }
     }
 }
-
-/*
- * System.out.println("Enter Donor Name: ");
- * System.out.println("Enter Donee Name: ");
- * System.out.println("Enter Distribution Date [DD-MM-YYYY]: ");
- * System.out.println("Remove Distributions Until [DD-MM-YYYY]: ");
- * System.out.println("Enter Amount: ");
- * public String getStartDate
- * get end date
- * 
- */

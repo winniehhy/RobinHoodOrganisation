@@ -75,6 +75,15 @@ public class Donation {
         this.distributionDate = distributionDate;
     }
 
+      // New getter and setter for donationType
+      public int getDonationType() {
+        return donationType;
+    }
+
+    public void setDonationType(int donationType) {
+        this.donationType = donationType;
+    }
+
     @Override
     public String toString() {
         return "[" +
@@ -85,4 +94,5 @@ public class Donation {
                 ", Distribution Date: " + distributionDate +
                 ']';
     }
+
 }
