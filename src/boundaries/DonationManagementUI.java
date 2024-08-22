@@ -46,10 +46,29 @@ public class DonationManagementUI {
         System.out.println("-----------------");
         System.out.println("Donor Name:        " + donation.getDonorName());
         System.out.println("Donee Name:        " + donation.getDoneeName());
-        System.out.println("Amount:            RM " + donation.getAmount());
+    
+        // Handle the int directly
+        int donationType = donation.getDonationType();
+    
+        switch (donationType) {
+            case 1: // Cash
+                System.out.println("Donation Type:     Cash");
+                System.out.println("Amount:            RM " + donation.getAmount());
+                break;
+            case 2: // Toys
+                System.out.println("Donation Type:     Toys");
+                break;
+            case 3: // Books
+                System.out.println("Donation Type:     Books");
+                break;
+            default:
+                System.out.println("Donation Type:     Unknown");
+        }
+    
         System.out.println("Donation Date:     " + donation.getDonationDate());
         System.out.println("Distribution Date: " + donation.getDistributionDate());
-    }
+        System.out.println();
+    }    
 
     public void showAmendDonationPrompt() {
         clearScreen();
