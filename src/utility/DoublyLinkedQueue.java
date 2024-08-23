@@ -68,6 +68,13 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
             return front.data;
         }
     
+        public E peekLast() {
+            if (rear == null) {
+                throw new IllegalStateException("Queue is empty");
+            }
+            return rear.data;
+        }
+        
         // Add element to the front
         public void addFirst(E item) {
             Node newNode = new Node(item);
@@ -101,22 +108,6 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
             size--;
             return data;
         }
-
-         // Get the first element in the queue
-    public E getFirst() {
-        if (front == null) {
-            throw new IllegalStateException("Queue is empty");
-        }
-        return front.data;
-    }
-
-    // Get the last element in the queue
-    public E getLast() {
-        if (rear == null) {
-            throw new IllegalStateException("Queue is empty");
-        }
-        return rear.data;
-    }
     
         public boolean isEmpty() {
             return size == 0;
@@ -199,6 +190,22 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
                 }
             };
         }
+
+        public E getFirst() {
+            if (front == null) {
+                throw new IllegalStateException("Queue is empty");
+            }
+            return front.data;
+        }
+    
+        // Get the last element in the queue
+        public E getLast() {
+            if (rear == null) {
+                throw new IllegalStateException("Queue is empty");
+            }
+            return rear.data;
+        }
+
         public boolean contains(E data) {
             Node current = front;
             while (current != null) {
@@ -244,8 +251,6 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
             }
             return false; // Element not found
         }
-
-        
 }
     
 

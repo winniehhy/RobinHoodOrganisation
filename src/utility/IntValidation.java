@@ -81,4 +81,24 @@ public class IntValidation {
         return integer; // Return the validated integer
     }
 
+    public static int inputYear() {
+        int year = 0;
+        boolean valid = false;
+        Scanner scanner = new Scanner(System.in);
+    
+        while (!valid) {
+            System.out.print("Enter the year: ");
+            try {
+                year = Integer.parseInt(scanner.nextLine().trim());
+                if (year > 0) {
+                    valid = true;
+                } else {
+                    System.out.println("Invalid input. Please enter a valid year.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid year.");
+            }
+        }
+        return year;
+    }
 }

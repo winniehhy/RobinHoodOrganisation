@@ -16,8 +16,9 @@ public class DonationDistributionUI {
         System.out.println("[3] Remove Past Distributions");
         System.out.println("[4] Track Distributions");
         System.out.println("[5] Display Summary");
-        System.out.println("[6] Back");
-        int userChoice = IntValidation.inputChoice(6);
+        System.out.println("[6] Display All Distributions");
+        System.out.println("[7] Back");
+        int userChoice = IntValidation.inputChoice(7);
         return userChoice;
     }
 
@@ -71,5 +72,24 @@ public class DonationDistributionUI {
             System.in.read();
         } catch (Exception e) {
         }
+    }
+
+    public void displayShortMessage(String text) {
+        System.out.println(text);
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    public void promptEnter(){
+        System.out.print("\nPress Enter to continue..."); 
+        try
+        {
+            System.in.read();
+        }  
+        catch(Exception e)
+        {}
     }
 }

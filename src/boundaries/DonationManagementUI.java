@@ -1,15 +1,18 @@
 package boundaries;
 
 import entity.Donation;
-import utility.DoublyLinkedQueue;
+import utility.*;
+
 import java.util.Scanner;
+
+import control.RobinHoodOrganisation;
 
 /**
  * Donation Management UI class
  * Author: Heng Han Yee
  */
 public class DonationManagementUI {
-    private Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
 
     public int getManagementChoice() {
         clearScreen();
@@ -39,36 +42,7 @@ public class DonationManagementUI {
     public void showSearchDonationPrompt() {
         clearScreen();
         System.out.println("=== Search Donation Details ===");
-    }
-    
-    public void showDonationDetails(Donation donation) {
-        System.out.println("Donation Details:");
-        System.out.println("-----------------");
-        System.out.println("Donor Name:        " + donation.getDonorName());
-        System.out.println("Donee Name:        " + donation.getDoneeName());
-    
-        // Handle the int directly
-        int donationType = donation.getDonationType();
-    
-        switch (donationType) {
-            case 1: // Cash
-                System.out.println("Donation Type:     Cash");
-                System.out.println("Amount:            RM " + donation.getAmount());
-                break;
-            case 2: // Toys
-                System.out.println("Donation Type:     Toys");
-                break;
-            case 3: // Books
-                System.out.println("Donation Type:     Books");
-                break;
-            default:
-                System.out.println("Donation Type:     Unknown");
-        }
-    
-        System.out.println("Donation Date:     " + donation.getDonationDate());
-        System.out.println("Distribution Date: " + donation.getDistributionDate());
-        System.out.println();
-    }    
+    }   
 
     public void showAmendDonationPrompt() {
         clearScreen();
@@ -86,39 +60,104 @@ public class DonationManagementUI {
     public int getTrackDonationChoice() {
         clearScreen();
         System.out.println("=== Track Donation Items ===");
-        System.out.println("[1] Track by Donor Name");
-        System.out.println("[2] Track by Donation Type");
-        System.out.println("[3] Track by Donation Date");
-        System.out.println("[4] Track Current Queue");
+        System.out.println("[1] Track by Donation Type");
+        System.out.println("[2] Track by Donation Date");
+        System.out.println("[3] Track by Most Donated item");
+        System.out.println("[4] Back to Management Menu");
         return utility.IntValidation.inputChoice(4);
     }
 
-    public void showTrackDonationPrompt(int choice) {
-        switch (choice) {
-            case 1:
-                System.out.println("Enter Donor Name:");
-                break;
-            case 2:
-                System.out.println("Enter Donation Type:");
-                break;
-            case 3:
-                System.out.println("Enter Donation Date (yyyy-mm-dd):");
-                break;
-            case 4:
-                clearScreen();
-                System.out.println("=== Current Donation Queue ===");
-                break;
+    public int inputDonationType() {
+        System.out.println("Select Donation Type:");
+        System.out.println("[1] Cash");
+        System.out.println("[2] Books");
+        System.out.println("[3] Toys");
+        return IntValidation.inputChoice(3);
+    }
+
+    public void showDonationListHeader(String distributionType) {
+        String header = String.format("%60s\n", distributionType + " Distributions");
+        String separator = "=".repeat(108);
+        
+        String columnHeaders;
+        if ("Cash".equals(distributionType)) {
+            columnHeaders = String.format("| %-15s | %-15s | %-15s | %-15s | %-30s | %-15s |\n", 
+                                        "Donor", "Donee", "Donated Item", "Amount", "Donation Date", "Distribution Date");
+        } else { // Toy or Book
+            columnHeaders = String.format("| %-15s | %-15s | %-20s | %-30s | %-15s |\n", 
+                                        "Donor", "Donee", "Donated Item", "Donation Date", "Distribution Date");
         }
+    
+        System.out.print(header);
+        System.out.println(separator);
+        System.out.print(columnHeaders);
+        System.out.println(separator);
+    }
+    
+    public void showDonationDetails(Donation donation) {
+        String formattedRow;
+        if (donation.getDonationType() == 1) { // Cash Donation
+            formattedRow = String.format("| %-15s | %-15s | %-15s | RM %-12d | %-30s | %-15s |\n",
+                                        donation.getDonorName(),
+                                        donation.getDoneeName() != null ? donation.getDoneeName() : "N/A",
+                                        "Cash",
+                                        donation.getAmount(),
+                                        donation.getDonationDate() != null ? donation.getDonationDate() : "N/A",
+                                        donation.getDistributionDate() != null ? donation.getDistributionDate() : "N/A");
+        } else { // Toy or Book Donation
+            String itemType = donation.getDonationType() == 2 ? "Books" : "Toys";
+            formattedRow = String.format("| %-15s | %-15s | %-20s | %-30s | %-15s |\n",
+                                        donation.getDonorName(),
+                                        donation.getDoneeName() != null ? donation.getDoneeName() : "N/A",
+                                        itemType,
+                                        donation.getDonationDate() != null ? donation.getDonationDate() : "N/A",
+                                        donation.getDistributionDate() != null ? donation.getDistributionDate() : "N/A");
+        }
+    
+        System.out.print(formattedRow);
+    }
+    
+
+    public void showTotal(int count, double total, String type) {
+        String separator = "=".repeat(108);
+        System.out.println(separator);
+        System.out.printf("Total count: %d\n", count);
+        System.out.printf("Total donation amount: %s%.2f\n", type, total);
     }
 
-    public void showFirstAndLastInQueue(Donation firstDonation, Donation lastDonation) {
+    public int listDonationsOptions() {
         clearScreen();
-        System.out.println("=== First Donation in Queue ===");
-        showDonationDetails(firstDonation);
-        System.out.println("\n=== Last Donation in Queue ===");
-        showDonationDetails(lastDonation);
+        System.out.println("Choose an option:");
+        System.out.println("[1] List donations by donor name");
+        System.out.println("[2] List all available donation items");
+        return utility.IntValidation.inputChoice(2);  // Expecting a choice between 1 and 2
     }
 
+    public void filterDonationsMenu() {
+        clearScreen();
+        System.out.println("=== Filter Donations ===");
+        System.out.println("[1] Filter by Year");
+        System.out.println("[2] Filter by Donation Frequency");
+        System.out.println("[3] Filter by Donation Amount Size");
+        System.out.println("[4] Back to Management Menu");
+    }
+
+    public static int inputInteger(String prompt) {
+        int value = 0;
+        boolean valid = false;
+
+        while (!valid) {
+            System.out.print(prompt);
+            try {
+                value = Integer.parseInt(scanner.nextLine().trim());
+                valid = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a whole number.");
+            }
+        }
+
+        return value;
+    }
 
     public void showSuccessMessage(String message) {
         System.out.println(message);
@@ -142,8 +181,9 @@ public class DonationManagementUI {
         }
     }
 
-    private void clearScreen() {
+    public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 }
+

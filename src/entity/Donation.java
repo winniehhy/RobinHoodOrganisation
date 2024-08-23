@@ -1,8 +1,7 @@
 package entity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -15,6 +14,8 @@ public class Donation {
     private Date donationDate;
     private Date distributionDate;
     private int donationType; //new
+
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
     public Donation() {
     }
@@ -74,9 +75,8 @@ public class Donation {
     public void setDistributionDate(Date distributionDate) {
         this.distributionDate = distributionDate;
     }
-
-      // New getter and setter for donationType
-      public int getDonationType() {
+    
+    public int getDonationType() {
         return donationType;
     }
 
@@ -84,15 +84,25 @@ public class Donation {
         this.donationType = donationType;
     }
 
+    public String displayTable() {
+        return String.format(
+            " | %-20s | %-20s | %-8d | %-17s | %-17s |",
+            donorName,
+            doneeName != null ? doneeName : "N/A",
+            amount,
+            donationDate != null ? formatter.format(donationDate) : "N/A",
+            distributionDate != null ? formatter.format(distributionDate) : "N/A"
+        );
+    } 
+
     @Override
     public String toString() {
         return "[" +
                 "Donor: " + donorName +
-                ", Donee: " + doneeName +
+                ", Donee: " + (doneeName != null ? doneeName : "N/A") +
                 ", Amount: RM " + amount +
-                ", Donation Date: " + donationDate +
-                ", Distribution Date: " + distributionDate +
+                ", Donation Date: " + (donationDate != null ? formatter.format(donationDate) : "N/A") +
+                ", Distribution Date: " + (distributionDate != null ? formatter.format(distributionDate) : "N/A") +
                 ']';
     }
-
 }
