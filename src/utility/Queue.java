@@ -1,4 +1,3 @@
-
 package utility;
 
 import java.util.Iterator;
@@ -12,6 +11,7 @@ import java.util.Iterator;
  * where elements are added to the back and removed from the front in a FIFO (First In, First Out) manner.
  * 
  * @author Heng Han Yee
+ *         Ho Zhi Xuen
  */
 public interface Queue<E> {
     /**
@@ -86,10 +86,53 @@ public interface Queue<E> {
     Object[] toArray();
 
     /**
-     * access each element in the queue without needing 
+     * Access each element in the queue without needing 
      * to directly interact with the queue's underlying structure.
      * 
      * @return an iterator over the elements in the queue
      */
     Iterator<E> iterator();
+
+    /**
+     * Retrieves, but does not remove, the item at the back of the queue.
+     * 
+     * @return the element at the back of the queue, or null if the queue is empty
+     */
+    E peekLast();
+
+    /**
+     * Adds an item to the front of the queue.
+     * 
+     * @param item the element to be added to the front of the queue
+     */
+    void addFirst(E item);
+
+    /**
+     * Removes and returns the item at the back of the queue.
+     * 
+     * @return the element at the back of the queue, or null if the queue is empty
+     */
+    E removeLast();
+
+    /**
+     * Retrieves, but does not remove, the item at the front of the queue.
+     * 
+     * @return the element at the front of the queue, or null if the queue is empty
+     */
+    E getFirst();
+
+    /**
+     * Retrieves, but does not remove, the item at the back of the queue.
+     * 
+     * @return the element at the back of the queue, or null if the queue is empty
+     */
+    E getLast();
+
+    /**
+     * Checks if the queue contains a specific element.
+     * 
+     * @param data the element to check for
+     * @return true if the queue contains the element, false otherwise
+     */
+    boolean contains(E data);
 }

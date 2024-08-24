@@ -8,7 +8,7 @@ import java.util.Scanner;
 import control.RobinHoodOrganisation;
 
 /**
- * Donation Management UI class
+ * 
  * Author: Heng Han Yee
  */
 public class DonationManagementUI {
@@ -75,51 +75,48 @@ public class DonationManagementUI {
         return IntValidation.inputChoice(3);
     }
 
-    public void showDonationListHeader(String distributionType) {
-        String header = String.format("%60s\n", distributionType + " Distributions");
-        String separator = "=".repeat(108);
+    public void showDonationListHeader(String donationType) {
+        String header = String.format("%50s\n", donationType + " Donations");
+        String separator = "=".repeat(88);
         
         String columnHeaders;
-        if ("Cash".equals(distributionType)) {
-            columnHeaders = String.format("| %-15s | %-15s | %-15s | %-15s | %-30s | %-15s |\n", 
-                                        "Donor", "Donee", "Donated Item", "Amount", "Donation Date", "Distribution Date");
+        if ("Cash".equals(donationType)) {
+            columnHeaders = String.format("| %-15s  | %-15s | %-15s | %-28s | \n", 
+                                        "Donor", "Donated Item", "Amount", "Donation Date");
         } else { // Toy or Book
-            columnHeaders = String.format("| %-15s | %-15s | %-20s | %-30s | %-15s |\n", 
-                                        "Donor", "Donee", "Donated Item", "Donation Date", "Distribution Date");
+            columnHeaders = String.format("| %-15s  | %-15s | %-15s | %-28s | \n", 
+                                        "Donor", "Donated Item", "Amount", "Donation Date");
         }
     
         System.out.print(header);
         System.out.println(separator);
         System.out.print(columnHeaders);
         System.out.println(separator);
-    }
+    }    
     
     public void showDonationDetails(Donation donation) {
         String formattedRow;
         if (donation.getDonationType() == 1) { // Cash Donation
-            formattedRow = String.format("| %-15s | %-15s | %-15s | RM %-12d | %-30s | %-15s |\n",
+            formattedRow = String.format("| %-16s | %-15s | RM %-12d | %-25s | \n",
                                         donation.getDonorName(),
-                                        donation.getDoneeName() != null ? donation.getDoneeName() : "N/A",
                                         "Cash",
                                         donation.getAmount(),
-                                        donation.getDonationDate() != null ? donation.getDonationDate() : "N/A",
-                                        donation.getDistributionDate() != null ? donation.getDistributionDate() : "N/A");
+                                        donation.getDonationDate() != null ? donation.getDonationDate() : "N/A");
         } else { // Toy or Book Donation
             String itemType = donation.getDonationType() == 2 ? "Books" : "Toys";
-            formattedRow = String.format("| %-15s | %-15s | %-20s | %-30s | %-15s |\n",
+            formattedRow = String.format("| %-15s  | %-15s | %-12d | %-25s |\n",
                                         donation.getDonorName(),
-                                        donation.getDoneeName() != null ? donation.getDoneeName() : "N/A",
                                         itemType,
-                                        donation.getDonationDate() != null ? donation.getDonationDate() : "N/A",
-                                        donation.getDistributionDate() != null ? donation.getDistributionDate() : "N/A");
+                                        donation.getAmount(),
+                                        donation.getDonationDate() != null ? donation.getDonationDate() : "N/A");
         }
     
         System.out.print(formattedRow);
-    }
+    }    
     
 
     public void showTotal(int count, double total, String type) {
-        String separator = "=".repeat(108);
+        String separator = "=".repeat(88);
         System.out.println(separator);
         System.out.printf("Total count: %d\n", count);
         System.out.printf("Total donation amount: %s%.2f\n", type, total);
@@ -142,6 +139,7 @@ public class DonationManagementUI {
         System.out.println("[4] Back to Management Menu");
     }
 
+
     public static int inputInteger(String prompt) {
         int value = 0;
         boolean valid = false;
@@ -159,7 +157,7 @@ public class DonationManagementUI {
         return value;
     }
 
-    public void showSuccessMessage(String message) {
+    public void showMessage(String message) {
         System.out.println(message);
     }
 

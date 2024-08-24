@@ -9,6 +9,7 @@ import java.util.Scanner;
  * All methods are static and can be accessed using the class name.
  *
  * @author Ho Zhi Xuen
+ *         Heng Han Yee
  */
 public class IntValidation {
 
@@ -81,6 +82,12 @@ public class IntValidation {
         return integer; // Return the validated integer
     }
 
+    /**
+     * Prompts the user to enter a valid year and validates the input.
+     * If the input is invalid or not a positive integer, the user is prompted again.
+     *
+     * @return The validated year entered by the user.
+     */
     public static int inputYear() {
         int year = 0;
         boolean valid = false;
