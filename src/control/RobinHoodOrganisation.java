@@ -24,7 +24,7 @@ public class RobinHoodOrganisation {
     public static DoublyLinkedQueue<Donation> toyDistributionQueue = new DoublyLinkedQueue<>();
 
     //Queue for managing Volunteers
-    public static DoublyLinkedQueue<> volunteerQueue = new DoublyLinkedQueue<>();
+    public static DoublyLinkedQueue<Volunteer> volunteerQueue = new DoublyLinkedQueue<>();
 
     //Queue for managing Events
     public static DoublyLinkedQueue<> eventQueue = new DoublyLinkedQueue<>();
