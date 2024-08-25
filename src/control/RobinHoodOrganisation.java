@@ -49,10 +49,10 @@ public class RobinHoodOrganisation {
                 DonationDistribution.main(null);
                 break;
             case 3:
-                VolunteerManagement.main(null);
+                EventManagement.main(null);
                 break;
             case 4:
-                EventManagement.main(null);
+                VolunteerManagement.main(null);
                 break;
             case 5:
                 // Exit the application
