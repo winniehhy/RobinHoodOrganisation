@@ -7,7 +7,7 @@ import utility.DoublyLinkedQueue;
 /**
  * The main class that handles the operations for managing the charity organisation.
  * 
- * @author ho Zhi Xuen
+ * @author Ho Zhi Xuen
  */
 public class RobinHoodOrganisation {
     
