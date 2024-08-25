@@ -57,5 +57,10 @@ public class VolunteerManagementUI {
         System.out.printf("%-12s %-25s %-7s %-12s%n" , "ID" , "Name" ,"Age", "Contact");
         System.out.println("------------------------------------------------------------");
     }
-
+    
+    public char getConfirmation(String message) {
+        System.out.println(message);
+        char confirmation = scanner.nextLine().trim().toUpperCase().charAt(0);
+        return confirmation;
+    }
 }
