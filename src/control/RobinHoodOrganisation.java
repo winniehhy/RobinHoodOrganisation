@@ -27,7 +27,7 @@ public class RobinHoodOrganisation {
     public static DoublyLinkedQueue<Volunteer> volunteerQueue = new DoublyLinkedQueue<>();
 
     //Queue for managing Events
-    public static DoublyLinkedQueue<> eventQueue = new DoublyLinkedQueue<>();
+    public static DoublyLinkedQueue<Event> eventQueue = new DoublyLinkedQueue<>();
     
     /**
      * The main method serves as the entry point for the Robin Hood Organisation application.
