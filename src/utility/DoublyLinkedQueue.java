@@ -111,6 +111,54 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return size;
     }
 
+    public E getFirst() {
+        return peek();
+    }
+
+    public E getLast() {
+        return peekLast();
+    }
+
+    public boolean contains(E data) {
+        Node current = front;
+        while (current != null) {
+            if (current.data.equals(data)) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    public boolean remove(E item) {
+        Node current = front;
+        while (current != null) {
+            if (current.data.equals(item)) {
+                if (current == front && current == rear) {
+                    front = null;
+                    rear = null;
+                } else if (current == front) {
+                    front = front.next;
+                    if (front != null) {
+                        front.prev = null;
+                    }
+                } else if (current == rear) {
+                    rear = rear.prev;
+                    if (rear != null) {
+                        rear.next = null;
+                    }
+                } else {
+                    current.prev.next = current.next;
+                    current.next.prev = current.prev;
+                }
+                size--;
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
     @Override
     public void initialize() {
         front = null;
@@ -176,53 +224,5 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
                 return data;
             }
         };
-    }
-
-    public E getFirst() {
-        return peek();
-    }
-
-    public E getLast() {
-        return peekLast();
-    }
-
-    public boolean contains(E data) {
-        Node current = front;
-        while (current != null) {
-            if (current.data.equals(data)) {
-                return true;
-            }
-            current = current.next;
-        }
-        return false;
-    }
-
-    public boolean remove(E item) {
-        Node current = front;
-        while (current != null) {
-            if (current.data.equals(item)) {
-                if (current == front && current == rear) {
-                    front = null;
-                    rear = null;
-                } else if (current == front) {
-                    front = front.next;
-                    if (front != null) {
-                        front.prev = null;
-                    }
-                } else if (current == rear) {
-                    rear = rear.prev;
-                    if (rear != null) {
-                        rear.next = null;
-                    }
-                } else {
-                    current.prev.next = current.next;
-                    current.next.prev = current.prev;
-                }
-                size--;
-                return true;
-            }
-            current = current.next;
-        }
-        return false;
     }
 }

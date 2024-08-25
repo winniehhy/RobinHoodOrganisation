@@ -3,15 +3,16 @@ package utility;
 import java.util.Iterator;
 
 /**
- * An interface for the Queue ADT.
- * 
- * @param <E> type of elements that the queue will store
+ * An interface for the Queue ADT with double-ended capabilities.
  * 
  * This interface defines the essential operations for a queue data structure,
  * where elements are added to the back and removed from the front in a FIFO (First In, First Out) manner.
+ * Additionally, it provides double-ended operations similar to a deque.
  * 
- * @author Heng Han Yee
- *         Ho Zhi Xuen
+ * @param <E> type of elements that the queue will store
+ * 
+ * Authors: Heng Han Yee
+ *          Ho Zhi Xuen
  */
 public interface Queue<E> {
     /**
@@ -21,22 +22,65 @@ public interface Queue<E> {
 
     /**
      * Adds an item to the back of the queue.
+     * 
+     * @param item the element to be added to the back of the queue
      */
     void enqueue(E item);
 
     /**
      * Removes and returns the item at the front of the queue.
      * 
-     * @return at the front of the queue, or null if the queue is empty
+     * @return the element at the front of the queue
+     * @throws IllegalStateException if the queue is empty
      */
     E dequeue();
 
     /**
      * Retrieves, but does not remove, the item at the front of the queue.
      * 
-     * @return the element at the front of the queue, or null if the queue is empty
+     * @return the element at the front of the queue
+     * @throws IllegalStateException if the queue is empty
      */
     E peek();
+
+    /**
+     * Retrieves, but does not remove, the item at the back of the queue.
+     * 
+     * @return the element at the back of the queue
+     * @throws IllegalStateException if the queue is empty
+     */
+    E peekLast();
+
+    /**
+     * Adds an item to the front of the queue.
+     * 
+     * @param item the element to be added to the front of the queue
+     */
+    void addFirst(E item);
+
+    /**
+     * Removes and returns the item at the back of the queue.
+     * 
+     * @return the element at the back of the queue
+     * @throws IllegalStateException if the queue is empty
+     */
+    E removeLast();
+
+    /**
+     * Retrieves, but does not remove, the item at the front of the queue.
+     * 
+     * @return the element at the front of the queue
+     * @throws IllegalStateException if the queue is empty
+     */
+    E getFirst();
+
+    /**
+     * Retrieves, but does not remove, the item at the back of the queue.
+     * 
+     * @return the element at the back of the queue
+     * @throws IllegalStateException if the queue is empty
+     */
+    E getLast();
 
     /**
      * Checks if the queue is empty.
@@ -60,7 +104,8 @@ public interface Queue<E> {
     /**
      * Adds an item to the back of the queue, returning true upon success.
      * 
-     * @return true if the element was added successfully, false otherwise
+     * @param item the element to be added to the back of the queue
+     * @return true if the element was added successfully
      */
     boolean offer(E item);
 
@@ -75,58 +120,24 @@ public interface Queue<E> {
      * Retrieves, but does not remove, the head of this queue.
      * 
      * @return the element at the front of the queue
+     * @throws IllegalStateException if the queue is empty
      */
     E element();
 
     /**
-     * Convert the queue to an array.
+     * Converts the queue to an array.
      * 
      * @return an array of all elements in the queue
      */
     Object[] toArray();
 
     /**
-     * Access each element in the queue without needing 
+     * Provides an iterator to access each element in the queue without needing 
      * to directly interact with the queue's underlying structure.
      * 
      * @return an iterator over the elements in the queue
      */
     Iterator<E> iterator();
-
-    /**
-     * Retrieves, but does not remove, the item at the back of the queue.
-     * 
-     * @return the element at the back of the queue, or null if the queue is empty
-     */
-    E peekLast();
-
-    /**
-     * Adds an item to the front of the queue.
-     * 
-     * @param item the element to be added to the front of the queue
-     */
-    void addFirst(E item);
-
-    /**
-     * Removes and returns the item at the back of the queue.
-     * 
-     * @return the element at the back of the queue, or null if the queue is empty
-     */
-    E removeLast();
-
-    /**
-     * Retrieves, but does not remove, the item at the front of the queue.
-     * 
-     * @return the element at the front of the queue, or null if the queue is empty
-     */
-    E getFirst();
-
-    /**
-     * Retrieves, but does not remove, the item at the back of the queue.
-     * 
-     * @return the element at the back of the queue, or null if the queue is empty
-     */
-    E getLast();
 
     /**
      * Checks if the queue contains a specific element.
@@ -135,4 +146,12 @@ public interface Queue<E> {
      * @return true if the queue contains the element, false otherwise
      */
     boolean contains(E data);
+
+    /**
+     * Removes the first occurrence of the specified element from the queue, if present.
+     * 
+     * @param item the element to be removed from the queue, if present
+     * @return true if the queue contained the specified element and it was removed
+     */
+    boolean remove(E item);
 }
