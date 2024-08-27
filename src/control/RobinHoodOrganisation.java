@@ -2,6 +2,7 @@ package control;
 
 import boundaries.*;
 import entity.Donation;
+import entity.Event;
 import utility.DoublyLinkedQueue;
 
 /**
