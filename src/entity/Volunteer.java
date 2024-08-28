@@ -1,5 +1,10 @@
 package entity;
 
+/**
+ *
+ * @ author Lee Zun Wei
+ */
+
 public class Volunteer {
     String id;
     String name;
