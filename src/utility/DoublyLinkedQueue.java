@@ -6,7 +6,9 @@ import java.util.Iterator;
 /**
  * Author: Heng Han Yee
  *         Ho Zhi Xuen
+ *         Lee Zun Wei
  */
+
 
 public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
     private class Node {
