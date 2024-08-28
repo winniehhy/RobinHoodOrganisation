@@ -3,6 +3,7 @@ package control;
 import boundaries.*;
 import entity.Donation;
 import entity.Event;
+import entity.EventAssignment;
 import utility.DoublyLinkedQueue;
 
 /**
@@ -29,6 +30,7 @@ public class RobinHoodOrganisation {
 
     //Queue for managing Events
     public static DoublyLinkedQueue<Event> eventQueue = new DoublyLinkedQueue<>();
+    public static DoublyLinkedQueue<EventAssignment> eventAssignmentQueue = new DoublyLinkedQueue<>();
     
     /**
      * The main method serves as the entry point for the Robin Hood Organisation application.
