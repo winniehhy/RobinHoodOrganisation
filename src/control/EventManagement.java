@@ -3,6 +3,10 @@ package control;
 
 import boundaries.EventManagementUI;
 import entity.Event;
+import entity.EventAssignment;
+import entity.Volunteer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import utility.DoublyLinkedQueue;
@@ -64,13 +68,16 @@ public class EventManagement {
     }
     
     public static void removeEvent(DoublyLinkedQueue<Event> event){
+        //prompt ui
         UI.DeleteEvent();
+        //get eventID to remove
         int delEventID = utility.IntValidation.integerValidation("Enter the eventID to be deleted: ", true);
         String eventID = String.valueOf(delEventID);
-        
+        //search for eventID
         Event eventToDelete = null;
         for (Event delEvent : event){
             if (delEvent.getEventID().equals(eventID)){
+                //delete event if found
                 eventToDelete = delEvent;
                 event.remove(delEvent);
                 System.out.println("Event with "+ delEvent + "is removed");
@@ -78,6 +85,7 @@ public class EventManagement {
                 break;
             }
         }
+        //check whether its empty or the event cant be find
         if(eventToDelete == null && event.isEmpty()){
             System.err.println("No event available");   
             scanner.nextLine();
@@ -87,12 +95,12 @@ public class EventManagement {
     }
     
     public static void searchEvent(DoublyLinkedQueue<Event> event){
+        //prompt UI
         UI.SearchEvent();
+        //get eventID to search for details
         int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to search for an event:", true);
         String eventID = String.valueOf(SearchEventID);
-        if (event.isEmpty()){
-            System.err.println("No event available");
-        }
+        //search for the eventID
         Event eventToSearch = null;
         for (Event SerEvent : event){
             if (SerEvent.getEventID().equals(eventID)){
@@ -102,6 +110,7 @@ public class EventManagement {
                 break;
             }
         }
+        //check whether its empty or the event cant be find
         if(eventToSearch == null && event.isEmpty()){
             System.err.println("No event available"); 
             scanner.nextLine();
@@ -111,12 +120,12 @@ public class EventManagement {
     }
     
     public static void AmendEvent(DoublyLinkedQueue<Event> event){
+        //prompt UI
         UI.AmendEvent();
+        //get EventID that need to be modified
         int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to modify:", true);
         String eventID = String.valueOf(SearchEventID);
-        if (event.isEmpty()){
-            System.err.println("No event available");
-        }
+        //Search for eventID
         Event eventToSearch = null;
         for (Event SerEvent : event){
             if (SerEvent.getEventID().equals(eventID)){
@@ -125,6 +134,7 @@ public class EventManagement {
                 break;
             }
         }
+        //check event existence
         if(eventToSearch == null && event.isEmpty()){
             System.err.println("No event available");
             scanner.nextLine();
@@ -132,9 +142,11 @@ public class EventManagement {
             UI.EventNotFound();
             scanner.nextLine();
         } else{
+            //update event detail
             String eventName = eventToSearch.getEventName();
             String eventDetail = eventToSearch.getEventDetail();
             Date eventDate = eventToSearch.getEventDate();
+            //get event update option
             int option = UI.AmendEventOption();       
             switch(option){
                 case 1: 
@@ -156,7 +168,9 @@ public class EventManagement {
                     break;
                 default:
             }
-            Event modEvent = new Event(eventName,eventDetail,eventID,eventDate);
+            //update event in the queeu by remove previous event from queue 
+            //and requeue the altered event 
+            Event modEvent = new Event(eventID,eventName,eventDetail,eventDate);
             event.remove(eventToSearch);
             event.enqueue(modEvent);
             UI.AmendSuccessful();
@@ -167,22 +181,128 @@ public class EventManagement {
     }  
     
     public static void AllEvent(DoublyLinkedQueue<Event> event){
+        //UI in table format
         UI.ListAllEvent();
+        //search for all event and print it as a table
         for (Event AllEvent : event){
             System.out.println(AllEvent.toTable());
-            
         }
+        //prompt when there is no event in queue
         if(event.isEmpty()){
             System.err.println("No event available");    
         }
         UI.toContinue();
     }
     
-    public static void main(String[] args) {
-        DoublyLinkedQueue<Event> event = RobinHoodOrganisation.eventQueue;
-
-        int option = UI.getEventMenuChoice();
+    public static void RemoveVolunteerEvent(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<Volunteer> volunteer, DoublyLinkedQueue<EventAssignment> assignments){
+        UI.VolunteerEventRemover();
+        Boolean eventExist = false;
+        Boolean volunteerExist = false;
+        //get eventID to search for details
+        int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to search for an event:", true);
+        String eventID = String.valueOf(SearchEventID);
+        //search for the eventID
+        Event eventToSearch = null;
+        for (Event SerEvent : event){
+            if (SerEvent.getEventID().equals(eventID)){
+                eventToSearch = SerEvent;
+                System.out.println(SerEvent);
+                eventExist = true;
+                break;
+            }
+        }
+        //check whether its empty or the event cant be find
+        if(eventToSearch == null && event.isEmpty()){
+            eventExist = false;
+            System.err.println("No event available"); 
+            scanner.nextLine();
+        }else if(eventToSearch == null){
+            eventExist = false;
+            UI.EventNotFound();
+        }
+        if(eventExist == true){
+            System.out.println("Vounteer in event " + eventID);
+            for (EventAssignment checkVonlunteerEvent : assignments){
+                if (checkVonlunteerEvent.getEventID().equals(eventID)){
+                    String VolunteerEvent = checkVonlunteerEvent.getVolunteerID();
+                    volunteerExist = true;
+                    for (Volunteer checkVolunteer : volunteer){
+                        if (checkVolunteer.getVolunteerID().equals(VolunteerEvent)){
+                            System.out.println(checkVolunteer);
+                        }
+                            
+                    }
+                }
+            }
+            
+            if (volunteerExist == true){
+                System.out.print("Enter volunteer ID to remove(any input to cancel): ");
+                String ID = scanner.nextLine();
+                for (EventAssignment DelVolunteer : assignments){
+                    if ((DelVolunteer.getVolunteerID().equals(ID)) && (DelVolunteer.getEventID().equals(eventID))){
+                            assignments.remove(DelVolunteer);
+                            System.err.println("Volunteer removed from event...");
+                            UI.toContinue();
+                    }
+                }
+            }else{
+                System.err.println("There is no volunteer in this event.");
+                UI.toContinue();
+            }
+            
+        }
         
+    }
+    
+    public static void SummaryReport(DoublyLinkedQueue<Event> event){
+        int option = UI.SummaryReportOption();
+        switch(option){
+            case 1:
+                
+        }
+        
+    }
+    
+    public static void generateData(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<Volunteer> volunteer, DoublyLinkedQueue<EventAssignment> assignments){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+                Date date = formatter.parse("25-09-2024"); 
+                Event event1 = new Event("1000","eventname1","event description1",date);
+                event.enqueue(event1);
+                date = formatter.parse("20-10-2024");
+                Event event2 = new Event("1001","eventname2","event description2",date);
+                event.enqueue(event2);
+                date = formatter.parse("25-11-2024");
+                Event event3 = new Event("1002","eventname3","event description3",date);
+                event.enqueue(event3);
+            } catch (ParseException e) {
+                System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy format.");
+            }
+        
+        Volunteer volunteer1 = new Volunteer("ab121","ali",18,"0165449234");
+        volunteer.enqueue(volunteer1);
+        Volunteer volunteer2 = new Volunteer("ab122","muthu",21,"0165239234");
+        volunteer.enqueue(volunteer2);
+        Volunteer volunteer3 = new Volunteer("ab123","ah kau",19,"0165473634");
+        volunteer.enqueue(volunteer3);
+        
+        EventAssignment assignEvent1 = new EventAssignment("1000","ab121");
+        assignments.enqueue(assignEvent1);
+        EventAssignment assignEvent2 = new EventAssignment("1001","ab121");
+        assignments.enqueue(assignEvent2);
+        EventAssignment assignEvent3 = new EventAssignment("1000","ab122");
+        assignments.enqueue(assignEvent3);
+        System.out.println("Success");
+        UI.toContinue();
+    }
+    
+    public static void main(String[] args){
+        DoublyLinkedQueue<Event> event = RobinHoodOrganisation.eventQueue;
+        DoublyLinkedQueue<Volunteer> volunteer = RobinHoodOrganisation.volunteerQueue;
+        DoublyLinkedQueue<EventAssignment> assignEvent = RobinHoodOrganisation.eventAssignmentQueue;
+
+        
+        int option = UI.getEventMenuChoice();
         switch(option){
             case 1:
                 //Create new event
@@ -211,16 +331,23 @@ public class EventManagement {
                 break;
             case 6:
                 //remove an event from volunteer
+                RemoveVolunteerEvent(event,volunteer,assignEvent);
+                main(null);
                 break;
             case 7:
                 //List all events for a volunteer
                 break;
             case 8:
                 //generate summary report
+                SummaryReport(event);
+                main(null);
                 break;
             case 9:
                 RobinHoodOrganisation.main(null);
                 break;
+            case 10:
+                generateData(event, volunteer,assignEvent);
+                main(null);
             default:
                 
             
