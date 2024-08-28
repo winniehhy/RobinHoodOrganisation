@@ -22,7 +22,8 @@ public class EventManagementUI{
         System.out.println("7. List all event for a volunteer");
         System.out.println("8. Generate Summary report");
         System.out.println("9. Return");
-        return utility.IntValidation.inputChoice(9);
+        System.out.println("10. Generate data");
+        return utility.IntValidation.inputChoice(10);
     }
     
     public void toContinue(){
@@ -83,5 +84,24 @@ public class EventManagementUI{
         System.out.println("");
         System.out.printf("%-10s%-20s%-20s%-30s\n","eventID","Event Name",
                 "Event Description","Event Date");
+    }
+    
+    public void VolunteerEventRemover(){
+        System.out.println("Event Management");
+        System.out.println("Event remover for volunteer");
+    }
+    
+    public int SummaryReportOption(){
+        System.out.println("Event Management report generator");
+        System.out.println("Please choose report to generate");
+        System.out.println("1. All Event report");
+        System.out.println("2. Event report");
+        return utility.IntValidation.inputChoice(2);
+    }
+    
+    public void EventReport(){
+        System.out.printf("%20s%20s","","Summary Event Report");
+        System.out.printf("%-10s%-20s%-20s%-30s%-20s\n","eventID","Event Name",
+                "Event Description","Event Date","Volunteer");
     }
 }
