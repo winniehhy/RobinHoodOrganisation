@@ -9,13 +9,29 @@ import java.util.Iterator;
  *         Lee Zun Wei
  */
 
-
+/**
+ * A doubly-linked list implementation of a queue that allows for efficient 
+ * addition and removal of elements from both ends. This implementation 
+ * also supports common queue operations like enqueue, dequeue, and peek.
+ * 
+ * @param <E> the type of elements held in this queue
+ */
 public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
+    /**
+     * A private inner class representing a node in the doubly-linked list.
+     * Each node stores a reference to the data and pointers to the next
+     * and previous nodes in the list.
+     */
     private class Node {
         E data;
         Node next;
         Node prev;
 
+        /**
+         * Constructs a new node with the given data.
+         * 
+         * @param data the data to be stored in this node
+         */
         Node(E data) {
             this.data = data;
             this.next = null;
@@ -27,12 +43,18 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
     private Node rear;
     private int size;
 
+    // Construct empty queue
     public DoublyLinkedQueue() {
         front = null;
         rear = null;
         size = 0;
     }
 
+    /**
+     * Adds an element to the end of the queue.
+     * 
+     * @param item the element to be added
+     */
     public void enqueue(E item) {
         Node newNode = new Node(item);
         if (rear == null) {
@@ -46,6 +68,13 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         size++;
     }
 
+
+     /**
+     * Removes and returns the element at the front of the queue.
+     * 
+     * @return the element at the front of the queue
+     * @throws IllegalStateException if the queue is empty
+     */
     public E dequeue() {
         if (front == null) {
             throw new IllegalStateException("Queue is empty");
@@ -61,7 +90,13 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         size--;
         return data;
     }
-
+    
+    /**
+     * Returns, but does not remove, the element at the front of the queue.
+     * 
+     * @return the element at the front of the queue
+     * @throws IllegalStateException if the queue is empty
+     */
     public E peek() {
         if (front == null) {
             throw new IllegalStateException("Queue is empty");
@@ -69,13 +104,20 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return front.data;
     }
 
+    /**
+     * Returns, but does not remove, the element at the rear of the queue.
+     * 
+     * @return the element at the rear of the queue
+     * @throws IllegalStateException if the queue is empty
+     */
     public E peekLast() {
         if (rear == null) {
             throw new IllegalStateException("Queue is empty");
         }
         return rear.data;
     }
-    
+
+    //Add element to the front of the queue
     public void addFirst(E item) {
         Node newNode = new Node(item);
         if (front == null) {
@@ -89,6 +131,7 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         size++;
     }
 
+    //Removes and returns the element at the rear of the queue.
     public E removeLast() {
         if (rear == null) {
             throw new IllegalStateException("Queue is empty");
@@ -105,22 +148,34 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return data;
     }
 
+    // Checks if the queue is empty.
     public boolean isEmpty() {
         return size == 0;
     }
-
+    
+    //Returns the number of elements in the queue.
     public int size() {
         return size;
     }
 
+    // Returns, but does not remove, the first element in the queue.
+    // This method is equivalent to {@link #peek()}.
     public E getFirst() {
         return peek();
     }
 
+    // Returns, but does not remove, the last element in the queue.
+    // This method is equivalent to {@link #peek()}.
     public E getLast() {
         return peekLast();
     }
 
+    /**
+     * Checks if the queue contains the specified element.
+     * 
+     * @param data the element to check for
+     * @return true if the queue contains the element, false otherwise
+     */
     public boolean contains(E data) {
         Node current = front;
         while (current != null) {
@@ -132,6 +187,12 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return false;
     }
 
+    /**
+     * Removes the first occurrence of the specified element from the queue, if it is present.
+     * 
+     * @param item the element to be removed
+     * @return true if the element was removed, false otherwise
+     */
     public boolean remove(E item) {
         Node current = front;
         while (current != null) {
@@ -161,6 +222,7 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return false;
     }
 
+    //Initialize the queue by resetting it to an empty state
     @Override
     public void initialize() {
         front = null;
@@ -168,6 +230,7 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         size = 0;
     }
 
+    //Clears the queue
     @Override
     public void clear() {
         front = null;
@@ -175,12 +238,19 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         size = 0;
     }
 
+    //Adds element to the end of the queue
     @Override
     public boolean offer(E item) {
         enqueue(item);
         return true;
     }
 
+    /**
+     * Removes and returns the element at the front of the queue,
+     * or returns null if the queue is empty.
+     * 
+     * @return the element at the front of the queue, or null if the queue is empty
+     */
     @Override
     public E poll() {
         if (front == null) {
@@ -189,11 +259,22 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return dequeue();
     }
 
+    /**
+     * Returns, but does not remove, the element at the front of the queue.
+     * 
+     * @return the element at the front of the queue
+     */
     @Override
     public E element() {
         return peek();
     }
 
+
+    /**
+     * Returns an array containing all of the elements in the queue in proper sequence.
+     * 
+     * @return an array containing all of the elements in the queue
+     */
     @Override
     public Object[] toArray() {
         Object[] array = new Object[size];
@@ -206,6 +287,11 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return array;
     }
 
+    /**
+     * Returns an iterator over the elements in this queue in proper sequence.
+     * 
+     * @return an iterator over the elements in this queue
+     */
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
