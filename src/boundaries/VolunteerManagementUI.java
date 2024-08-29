@@ -63,4 +63,14 @@ public class VolunteerManagementUI {
         char confirmation = scanner.nextLine().trim().toUpperCase().charAt(0);
         return confirmation;
     }
+
+    public void getSummary(){
+        System.out.println("===============================================");
+        System.out.println("                 SUMMARY REPORT                ");
+        System.out.println("===============================================");
+    }
+
+    public void getSeperator(){
+        System.out.println("===============================================");
+    }
 }
