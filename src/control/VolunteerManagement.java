@@ -2,6 +2,8 @@ package control;
 
 import boundaries.VolunteerManagementUI;
 import entity.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import utility.*;
 
@@ -16,6 +18,17 @@ public class VolunteerManagement {
         return volunteerQueue;
     }
 
+    public static DoublyLinkedQueue<Event> getEvent(DoublyLinkedQueue<Event> eventQueue){
+
+        return eventQueue;
+    }
+
+    public static DoublyLinkedQueue<EventAssignment> getEventAssignments(DoublyLinkedQueue<EventAssignment> eventAssignmentQueue){
+
+        return eventAssignmentQueue;
+    }
+
+    //case 1: Steps to add new volunteer
     public static void addVolunteer(DoublyLinkedQueue<Volunteer> volunteerQueue){
 
         Scanner scanner = new Scanner(System.in);
@@ -46,7 +59,7 @@ public class VolunteerManagement {
 
     }
 
-
+    //case 2:Steps to remove existing volunteer
     public static void removeVolunteer(DoublyLinkedQueue<Volunteer> volunteerQueue){
         String volunteerName = StringValidation.alphabetValidation("Enter volunteer name to remove: ");
 
@@ -77,7 +90,7 @@ public class VolunteerManagement {
         }
     }
 
-
+    //case 6: Steps to list volunteers
     public static void listVolunteer(DoublyLinkedQueue<Volunteer> volunteerQueue){
         volunteerUI.getListFormat();
 
@@ -90,7 +103,7 @@ public class VolunteerManagement {
         }
     }
 
-    //case 6: Steps to search volunteers
+    //case 3: Steps to search volunteers
     public static void searchVolunteerr(DoublyLinkedQueue<Volunteer> volunteerQueue){
         Scanner scanner = new Scanner(System.in);
 
@@ -104,7 +117,7 @@ public class VolunteerManagement {
 
             switch(userChoice){
                 case 1:
-                    System.out.print("Enter Volunteer ID to search: ");
+                    System.out.print("Enter Volunteer ID to search: "); //input ID to search
                     String volunteerID = scanner.nextLine();
 
                     boolean foundByID = false;
@@ -117,16 +130,16 @@ public class VolunteerManagement {
                     }
 
                     if (!foundByID) {
-                        System.out.println("No Volunteer Found with ID: " + volunteerID);
+                        System.out.println("No Volunteer Found with ID: " + volunteerID); //No volunteer ID found
                     }
                     break;
 
                 case 2:
-                    String volunteerName = StringValidation.alphabetValidation("Enter volunteer name to search: ");
+                    String volunteerName = StringValidation.alphabetValidation("Enter volunteer name to search: "); //input name to search
                     
                     boolean foundByName = false;
                     for (Volunteer volunteer : volunteerQueue) {
-                        if (volunteer.getVolunteerName().toLowerCase().contains(volunteerName.toLowerCase())) {
+                        if (volunteer.getVolunteerName().toLowerCase().contains(volunteerName.toLowerCase())) { //format all to lower case to compare
                             foundByName = true;
                             volunteerUI.getSearchList();
                             System.out.println(volunteer.displayVolunteerDetail());
@@ -134,10 +147,14 @@ public class VolunteerManagement {
                     }
 
                     if (!foundByName) {
-                        System.out.println("No Volunteer Found with Name: " + volunteerName);
+                        System.out.println("No Volunteer Found with Name: " + volunteerName); //No volunteer name found
                     }
                 break;
 
+                case 3:
+                    RobinHoodOrganisation.main(null);
+                    break;
+                    
                 default:
             }
 
@@ -156,9 +173,9 @@ public class VolunteerManagement {
                     String idFilter = scanner.nextLine();
     
                     System.out.println("Filtered Volunteers by ID:");
+                    volunteerUI.getSearchList();
                     for (Volunteer volunteer : volunteerQueue) {
                         if (volunteer.getVolunteerID().equalsIgnoreCase(idFilter)) {
-                            volunteerUI.getSearchList();
                             System.out.println(volunteer.displayVolunteerDetail());
                         }
                     }
@@ -168,36 +185,37 @@ public class VolunteerManagement {
                     String nameFilter = StringValidation.alphabetValidation("Enter Volunteer Name to filter: ");
     
                     System.out.println("Filtered Volunteers by Name:");
+                    volunteerUI.getSearchList();
                     for (Volunteer volunteer : volunteerQueue) {
                         if (volunteer.getVolunteerName().toLowerCase().contains(nameFilter.toLowerCase())) {
-                            volunteerUI.getSearchList();
                             System.out.println(volunteer.displayVolunteerDetail());
                         }
                     }
                     break;
+
     
-                case 3: // Filter by Age
+                case 3: // Filter by Phone
+                    System.out.print("Enter Volunteer Phone to filter: ");
+                    String phoneFilter = scanner.nextLine();
+    
+                    System.out.println("Filtered Volunteers by Phone:");
+                    volunteerUI.getSearchList();
+                    for (Volunteer volunteer : volunteerQueue) {
+                        if (volunteer.getVolunteerPhone().contains(phoneFilter)) {
+                            System.out.println(volunteer.displayVolunteerDetail());
+                        }
+                    }
+                    break;
+
+                case 4: // Filter by Age
                     System.out.print("Enter Volunteer Age to filter: ");
                     int ageFilter = scanner.nextInt();
                     scanner.nextLine(); // Consume the newline
     
                     System.out.println("Filtered Volunteers by Age:");
+                    volunteerUI.getSearchList();
                     for (Volunteer volunteer : volunteerQueue) {
                         if (volunteer.getVolunteerAge() == ageFilter) {
-                            volunteerUI.getSearchList();
-                            System.out.println(volunteer.displayVolunteerDetail());
-                        }
-                    }
-                    break;
-    
-                case 4: // Filter by Phone
-                    System.out.print("Enter Volunteer Phone to filter: ");
-                    String phoneFilter = scanner.nextLine();
-    
-                    System.out.println("Filtered Volunteers by Phone:");
-                    for (Volunteer volunteer : volunteerQueue) {
-                        if (volunteer.getVolunteerPhone().contains(phoneFilter)) {
-                            volunteerUI.getSearchList();
                             System.out.println(volunteer.displayVolunteerDetail());
                         }
                     }
@@ -214,6 +232,178 @@ public class VolunteerManagement {
         }
     }
 
+    // Case 4: Steps to assign volunteer to events
+    public static void assignVolunteer(DoublyLinkedQueue<Volunteer> volunteerQueue, DoublyLinkedQueue<Event> eventQueue, 
+    DoublyLinkedQueue<EventAssignment> eventAssignments) {
+
+        // Get Volunteer ID
+        System.out.print("Enter Volunteer ID to assign: ");
+        String volunteerID = scanner.nextLine();
+    
+        // Check if volunteer exists
+        boolean volunteerExists = false;
+        for (Volunteer volunteer : volunteerQueue) {
+            if (volunteer.getVolunteerID().equalsIgnoreCase(volunteerID)) {
+                volunteerExists = true;
+                break;
+            }
+        }
+    
+        if (!volunteerExists) {
+            System.out.println("No Volunteer found with ID: " + volunteerID);
+            return;
+        }
+    
+        // Get Event ID
+        System.out.print("Enter Event ID to assign: ");
+        String eventID = scanner.nextLine();
+    
+        // Check if event exists
+        boolean eventExists = false;
+        for (Event event : eventQueue) {
+            if (event.getEventID().equalsIgnoreCase(eventID)) {
+                eventExists = true;
+                break;
+            }
+        }
+    
+        if (!eventExists) {
+            System.out.println("No Event found with ID: " + eventID);
+            return;
+        }
+    
+        // Create and add EventAssignment
+        EventAssignment eventAssignment = new EventAssignment(eventID, volunteerID);
+        eventAssignments.enqueue(eventAssignment);
+    
+        System.out.println("Volunteer successfully assigned to the event.");
+    }
+    
+
+
+
+    //case 5: Steps to list events assigned to volunteers
+    public static void listEventVolunteer(DoublyLinkedQueue<Volunteer> volunteerQueue, DoublyLinkedQueue<Event> eventQueue,
+    DoublyLinkedQueue<EventAssignment> eventAssignments){
+
+        // Variables to keep track of the last printed volunteer ID
+        String lastPrintedVolunteerID = null;
+
+        volunteerUI.getListEventAssigned();
+
+        // Iterate through EventAssignments to find and print unique volunteers and their events
+        for (EventAssignment assignment : eventAssignments) {
+            String volunteerID = assignment.getVolunteerID();
+            String eventID = assignment.getEventID();
+
+            // Find the volunteer with the matching ID
+            Volunteer volunteer = null;
+            for (Volunteer v : volunteerQueue) {
+                if (v.getVolunteerID().equalsIgnoreCase(volunteerID)) {
+                    volunteer = v;
+                    break;
+                }
+            }
+
+            // Find the event with the matching ID
+            Event event = null;
+            for (Event e : eventQueue) {
+                if (e.getEventID().equalsIgnoreCase(eventID)) {
+                    event = e;
+                    break;
+                }
+            }
+
+            // If both volunteer and event are found
+            if (volunteer != null && event != null) {
+                // Print volunteer ID and name only if it's different from the last printed
+                if (!volunteerID.equals(lastPrintedVolunteerID)) {
+                    System.out.printf("%-12s %-25s ", volunteer.getVolunteerID(), volunteer.getVolunteerName());
+                    lastPrintedVolunteerID = volunteerID; // Update the last printed volunteer ID
+                } else {
+                    // Print spaces for volunteer ID and name if already displayed
+                    System.out.printf("%-12s %-25s ", "", "");
+                }
+
+                // Print event details
+                System.out.printf("%-8s %-25s %-30s%n", event.getEventID(), event.getEventName(), event.getEventDetail());
+            }
+        }
+
+        // Check if there are no volunteers or events assigned
+        if (lastPrintedVolunteerID == null) {
+            System.out.println("No volunteers are currently assigned to any events.");
+        }
+    }
+
+    //case 8 code for summary
+    public static void volunteerSummary(DoublyLinkedQueue<Volunteer> volunteerQueue, 
+                                        DoublyLinkedQueue<Event> eventQueue, 
+                                        DoublyLinkedQueue<EventAssignment> eventAssignments){
+
+        System.out.print("\033[H\033[2J");
+        volunteerUI.getSummary();                                    
+
+        // Print total number of volunteers
+        int totalVolunteers = volunteerQueue.size();
+        System.out.println("Total Number of Volunteers: " + totalVolunteers);
+
+        // Print total number of events
+        int totalEvents = eventQueue.size();
+        System.out.println("Total Number of Events: " + totalEvents);
+
+        // Print total number of volunteer assignments
+        int totalAssignments = eventAssignments.size();
+        System.out.println("Total Number of Volunteer Assignments: " + totalAssignments);
+
+        volunteerUI.getSeperator();                                   
+
+        // Find the most assigned volunteer
+        Map<String, Integer> volunteerAssignmentCount = new HashMap<>();
+        
+        for (EventAssignment assignment : eventAssignments) {
+            String volunteerID = assignment.getVolunteerID();
+            volunteerAssignmentCount.put(volunteerID, volunteerAssignmentCount.getOrDefault(volunteerID, 0) + 1);
+        }
+
+        // Determine the volunteer with the maximum assignments
+        String mostAssignedVolunteerID = null;
+        int maxAssignments = 0;
+        
+        for (Map.Entry<String, Integer> entry : volunteerAssignmentCount.entrySet()) {
+            if (entry.getValue() > maxAssignments) {
+                maxAssignments = entry.getValue();
+                mostAssignedVolunteerID = entry.getKey();
+            }
+        }
+
+        // Print the most assigned volunteer's details
+        if (mostAssignedVolunteerID != null) {
+            Volunteer mostAssignedVolunteer = null;
+            for (Volunteer volunteer : volunteerQueue) {
+                if (volunteer.getVolunteerID().equalsIgnoreCase(mostAssignedVolunteerID)) {
+                    mostAssignedVolunteer = volunteer;
+                    break;
+                }
+            }
+            
+            if (mostAssignedVolunteer != null) {
+                System.out.println("\nMost Assigned Volunteer:");
+                System.out.printf("ID: %s\nName: %s\nAssignments: %d\n", 
+                                mostAssignedVolunteer.getVolunteerID(), 
+                                mostAssignedVolunteer.getVolunteerName(), 
+                                maxAssignments);
+            } else {
+                System.out.println("Could not find the most assigned volunteer.");
+            }
+        } else {
+            System.out.println("No assignments found.");
+        }
+
+        volunteerUI.getSeperator(); 
+    }
+
+
     public static void waitForEnter() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("");
@@ -224,6 +414,8 @@ public class VolunteerManagement {
 
     public static void main(String[] args) {
         DoublyLinkedQueue<Volunteer> volunteerQueue = RobinHoodOrganisation.volunteerManagementQueue;
+        DoublyLinkedQueue<Event> eventQueue = RobinHoodOrganisation.eventQueue;
+        DoublyLinkedQueue<EventAssignment> assignEvent = RobinHoodOrganisation.eventAssignmentQueue;
 
         while (true) { 
             int userChoice = volunteerUI.getMenuList();
@@ -244,10 +436,17 @@ public class VolunteerManagement {
                     break; 
 
                 case 4:
+                    assignVolunteer(volunteerQueue, eventQueue, assignEvent);
+                    waitForEnter();
+                    break;
+
                 case 5:
+                    listEventVolunteer(volunteerQueue, eventQueue, assignEvent);
+                    waitForEnter();
+                    break;
+
                 case 6:
                     listVolunteer(volunteerQueue);
-
                     waitForEnter();
                     break;
 
@@ -257,14 +456,17 @@ public class VolunteerManagement {
                     break;
 
                 case 8:
+                    volunteerSummary(volunteerQueue, eventQueue, assignEvent);
+                    waitForEnter();
                     break;
 
                 case 9:
-                    return;
+                    RobinHoodOrganisation.main(null);
 
                 default:
+                    System.out.println("Invalid Input");
+                    return;
             }
         }
     }
 }
-
