@@ -7,6 +7,12 @@ import java.util.Map;
 import java.util.Scanner;
 import utility.*;
 
+/**
+ * Manages the controls of volunteer managements.
+ * 
+ * @author Lee Zun Wei
+ */
+
 public class VolunteerManagement {
     
     private static VolunteerManagementUI volunteerUI = new VolunteerManagementUI();
