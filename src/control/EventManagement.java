@@ -220,12 +220,15 @@ public class EventManagement {
             eventExist = false;
             UI.EventNotFound();
         }
+        //if event exist, list volunteer in event
         if(eventExist == true){
             System.out.println("Vounteer in event " + eventID);
+            //check for volunteer in an event
             for (EventAssignment checkVonlunteerEvent : assignments){
                 if (checkVonlunteerEvent.getEventID().equals(eventID)){
                     String VolunteerEvent = checkVonlunteerEvent.getVolunteerID();
                     volunteerExist = true;
+                    //list volunteer
                     for (Volunteer checkVolunteer : volunteer){
                         if (checkVolunteer.getVolunteerID().equals(VolunteerEvent)){
                             System.out.println(checkVolunteer);
@@ -234,10 +237,11 @@ public class EventManagement {
                     }
                 }
             }
-            
+            //if volunteer in event,ask volunteerID to delete
             if (volunteerExist == true){
                 System.out.print("Enter volunteer ID to remove(any input to cancel): ");
                 String ID = scanner.nextLine();
+                //check for volunteerID to remove
                 for (EventAssignment DelVolunteer : assignments){
                     if ((DelVolunteer.getVolunteerID().equals(ID)) && (DelVolunteer.getEventID().equals(eventID))){
                             assignments.remove(DelVolunteer);
@@ -246,6 +250,7 @@ public class EventManagement {
                     }
                 }
             }else{
+                //if there is no volunteer in events
                 System.err.println("There is no volunteer in this event.");
                 UI.toContinue();
             }
@@ -254,15 +259,78 @@ public class EventManagement {
         
     }
     
-    public static void SummaryReport(DoublyLinkedQueue<Event> event){
-        int option = UI.SummaryReportOption();
-        switch(option){
-            case 1:
-                
+    public static void FindVolunteerEvent(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<Volunteer> volunteer, DoublyLinkedQueue<EventAssignment> assignments){
+        //prompt banner
+        UI.ListVolunteerEvent();
+        //list out volunteer in queue
+        for (Volunteer allVolunteer : volunteer){
+            System.out.println(allVolunteer);
         }
-        
+        //ask for volunteerID
+        System.out.print("Enter an volunteerID to search for its event:");
+        String SearchVolunteerID = scanner.nextLine();
+        //list out volunteer event
+        System.out.println("Event list for VolunteerID: " + SearchVolunteerID);
+        for (EventAssignment getEvent : assignments){
+            //if there is matching event with volunteer, print volunteer event
+            if (getEvent.getVolunteerID().equals(SearchVolunteerID)){
+                String eventFound = getEvent.getEventID();
+                //print volunteer event
+                for (Event listEvent : event){
+                    if(listEvent.getEventID().equals(eventFound))
+                    System.out.println(listEvent);                
+                }
+            }
+        }
+        //searching done
+        UI.toContinue();
     }
     
+    public static void SummaryReport(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<EventAssignment> assignments){
+        //initializer for report analysis
+        int totalEvent = 0,totalVolunteer = 0;
+        int compareEvent = 0;
+        String popularEventID = null,compareEventID = null;
+        //report template
+        UI.EventReport();
+        //check for event and print event details
+        for(Event allEvent: event){
+            System.out.print(allEvent.toTable());
+            String eventID = allEvent.getEventID();
+            int popularEvent = 0;
+            //check for volunteer in event
+            for(EventAssignment allVolunteer: assignments){
+                if(allVolunteer.getEventID().equals(eventID)){
+                    System.out.printf("%-10s\n",allVolunteer.getVolunteerID());
+                    System.out.printf("%-80s","");
+                    totalVolunteer ++;
+                    popularEvent ++;
+                    compareEventID = allVolunteer.getEventID();
+                }
+            }
+            //check whether event is the most popular
+            if(popularEvent>compareEvent){
+                compareEvent = popularEvent;
+                popularEventID = compareEventID;
+            }
+            //print total volunteer in an event
+            System.out.println(popularEvent+" Volunteer");
+            System.out.println("");
+            totalEvent ++;
+        }
+        //analysis for total event and total volunteer
+        UI.totalEvent();
+        System.out.println("Total event: " + totalEvent);
+        System.out.println("Total volunteer: " + totalVolunteer);
+        //analysis for most popular event
+        UI.mostPopularEvent();
+        System.out.println("eventID             : " + popularEventID);
+        System.out.println("Number of Volunteer : " + compareEvent);
+        //report generation end
+        UI.toContinue();
+        
+    }
+    //To generate data if other subsystem not working 
     public static void generateData(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<Volunteer> volunteer, DoublyLinkedQueue<EventAssignment> assignments){
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         try {
@@ -295,6 +363,8 @@ public class EventManagement {
         System.out.println("Success");
         UI.toContinue();
     }
+    
+    
     
     public static void main(String[] args){
         DoublyLinkedQueue<Event> event = RobinHoodOrganisation.eventQueue;
@@ -336,16 +406,20 @@ public class EventManagement {
                 break;
             case 7:
                 //List all events for a volunteer
+                FindVolunteerEvent(event,volunteer,assignEvent);
+                main(null);
                 break;
             case 8:
                 //generate summary report
-                SummaryReport(event);
+                SummaryReport(event,assignEvent);
                 main(null);
                 break;
             case 9:
+                //return to homepage
                 RobinHoodOrganisation.main(null);
                 break;
             case 10:
+                //to generate dummy data
                 generateData(event, volunteer,assignEvent);
                 main(null);
             default:
