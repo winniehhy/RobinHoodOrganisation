@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package entity;
 
 import java.text.SimpleDateFormat;
@@ -12,14 +8,14 @@ import java.util.Date;
  * @author Phoon Chong Seng
  */
 public class Event {
-    private String EventName, EventDetail, EventID;
+    private String EventID,EventName, EventDetail;
     private Date EventDate;
     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
-    public Event(String EventName, String EventDetail, String EventID, Date EventDate) {
+    public Event(String EventID, String EventName, String EventDetail, Date EventDate) {
+        this.EventID = EventID;
         this.EventName = EventName;
         this.EventDetail = EventDetail;
-        this.EventID = EventID;
         this.EventDate = EventDate;
     }
 
