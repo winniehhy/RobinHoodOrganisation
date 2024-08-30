@@ -27,7 +27,7 @@ public class EventManagementUI{
     }
     
     public void toContinue(){
-        System.out.println("Press any key to continue");
+        System.out.println("Press enter to continue");
         scanner.nextLine();
     }
     
@@ -91,17 +91,38 @@ public class EventManagementUI{
         System.out.println("Event remover for volunteer");
     }
     
-    public int SummaryReportOption(){
-        System.out.println("Event Management report generator");
-        System.out.println("Please choose report to generate");
-        System.out.println("1. All Event report");
-        System.out.println("2. Event report");
-        return utility.IntValidation.inputChoice(2);
+    public void ListVolunteerEvent(){
+        System.out.println("Event Management");
+        System.out.println("Search Volunteer Event");
+        System.out.println("Volunteer list");
     }
     
     public void EventReport(){
-        System.out.printf("%20s%20s","","Summary Event Report");
-        System.out.printf("%-10s%-20s%-20s%-30s%-20s\n","eventID","Event Name",
-                "Event Description","Event Date","Volunteer");
+        System.out.printf("%25s%30s\n","","Event Summary Report");
+        for (int i = 0; i < 95; i++) {
+            System.out.print("_");
+        }
+        System.out.printf("\n%-10s%-20s%-20s%-30s%-10s\n","eventID","Event Name",
+                "Event Description","Event Date","VolunteerID");
+        for (int i = 0; i < 95; i++) {
+            System.out.print("_");
+        }
+        System.out.println("");
+    }
+    
+    public void totalEvent(){
+        System.out.println("\nEvent Analysis");
+        for (int i = 0; i < 30; i++) {
+            System.out.print("_");
+        }
+        System.out.println("");
+    }
+    
+    public void mostPopularEvent(){
+        System.out.println("\nMost popular event");
+        for (int i = 0; i < 30; i++) {
+            System.out.print("_");
+        }
+        System.out.println("");
     }
 }
