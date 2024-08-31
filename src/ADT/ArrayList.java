@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
  * @param <E> the type of elements in this list
  * 
  * Authors: Ho Zhi Xuen
+ *          Lee Zun Wei
  */
 public class ArrayList<E> implements List<E> {
     private static final int DEFAULT_CAPACITY = 10;
@@ -114,6 +115,27 @@ public class ArrayList<E> implements List<E> {
         E oldValue = (E) elements[index];
         elements[index] = element;
         return oldValue;
+    }
+
+    /**
+     * Returns the index of the first occurrence of the specified element in this list,
+     * or -1 if this list does not contain the element.
+     *
+     * @param e element to search for
+     * @return the index of the first occurrence of the specified element,
+     *         or -1 if this list does not contain the element
+     */
+    @Override
+    public int indexOf(E e) {
+        for (int i = 0; i < size; i++) {
+            if (elements[i] == null && e == null) {
+                return i;
+            }
+            if (elements[i] != null && elements[i].equals(e)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
