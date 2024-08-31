@@ -57,6 +57,12 @@ public class VolunteerManagementUI {
         System.out.printf("%-12s %-25s %-7s %-12s%n" , "ID" , "Name" ,"Age", "Contact");
         System.out.println("------------------------------------------------------------");
     }
+
+    public void getListEventAssigned(){
+        System.out.println("--------------------------------------------------------------------------------------------------");
+        System.out.printf("%-12s %-25s %-8s %-25s %-30s%n" ,  "ID" , "Name" ,"EventID", "Event Name", "EventDetails");
+        System.out.println("--------------------------------------------------------------------------------------------------");
+    }
     
     public char getConfirmation(String message) {
         System.out.println(message);
