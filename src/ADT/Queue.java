@@ -7,7 +7,7 @@ import java.util.Iterator;
  * 
  * This interface defines the essential operations for a queue data structure,
  * where elements are added to the back and removed from the front in a FIFO (First In, First Out) manner.
- * Additionally, it provides double-ended operations similar to a deque.
+ * Additionally, it provides double-ended operations similar to a dequeue.
  * 
  * @param <E> type of elements that the queue will store
  * 
