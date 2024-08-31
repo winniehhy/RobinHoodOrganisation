@@ -36,8 +36,17 @@ public class VolunteerManagement {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter Volunteer ID: ");
-        String id = scanner.nextLine();
+        String id;
+        while (true) {
+            System.out.print("Enter Volunteer ID (National IC Number): ");
+            id = scanner.nextLine();
+    
+            if (id.length() == 12 && id.matches("\\d+")) {
+                break;  // Exit loop if ID is exactly 12 digits long
+            } else {
+                System.out.println("Invalid ID.");
+            }
+        }
 
         String name = StringValidation.alphabetValidation("Enter Volunteer Name: ");
 
@@ -458,7 +467,7 @@ public class VolunteerManagement {
                     RobinHoodOrganisation.main(null);
 
                 default:
-                    System.out.println("Invalide Input");
+                    System.out.println("Invalid Input");
                     return;
             }
         }
