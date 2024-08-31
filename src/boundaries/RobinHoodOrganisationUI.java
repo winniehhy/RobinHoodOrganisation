@@ -14,8 +14,9 @@ public class RobinHoodOrganisationUI {
     System.out.println("[2] Donation Distribution");
     System.out.println("[3] Event Management");
     System.out.println("[4] Volunteer Management");
-    System.out.println("[5] Quit");
-    int userChoice = IntValidation.inputChoice(5);
+    System.out.println("[5] Import Data");
+    System.out.println("[6] Quit");
+    int userChoice = IntValidation.inputChoice(6);
     return userChoice;
   }
 }
