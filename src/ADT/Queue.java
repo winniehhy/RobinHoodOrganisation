@@ -67,14 +67,6 @@ public interface Queue<E> {
     E removeLast();
 
     /**
-     * Retrieves, but does not remove, the item at the front of the queue.
-     * 
-     * @return the element at the front of the queue
-     * @throws IllegalStateException if the queue is empty
-     */
-    E getFirst();
-
-    /**
      * Retrieves, but does not remove, the item at the back of the queue.
      * 
      * @return the element at the back of the queue
