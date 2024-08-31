@@ -121,7 +121,7 @@ public interface Queue<E> {
      * 
      * @return an array of all elements in the queue
      */
-    E[] toArray();
+    Object[] toArray();
 
     /**
      * Provides an iterator to access each element in the queue without needing 
