@@ -56,7 +56,7 @@ public class RobinHoodOrganisation {
                 EventManagement.main(null);
                 break;
             case 4:
-                //VolunteerManagement.main(null);
+                VolunteerManagement.main(null);
                 break;
             case 5:
                 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
