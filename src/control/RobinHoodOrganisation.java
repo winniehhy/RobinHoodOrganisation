@@ -105,8 +105,9 @@ public class RobinHoodOrganisation {
                     eventQueue.enqueue(new Event("E001", "Charity Run", "Annual charity run event", formatter.parse("01-12-2023")));
                     eventQueue.enqueue(new Event("E002", "Food Drive", "Community food drive", formatter.parse("15-11-2023")));
 
-                    eventAssignmentQueue.enqueue(new EventAssignment("John Doe", "Charity Run"));
-                    eventAssignmentQueue.enqueue(new EventAssignment("Jane Smith", "Food Drive"));
+                    eventAssignmentQueue.enqueue(new EventAssignment("E001", "051223145566"));
+                    eventAssignmentQueue.enqueue(new EventAssignment("E002", "051223145566"));
+                    eventAssignmentQueue.enqueue(new EventAssignment("E001", "990405148899"));
                 } catch (ParseException e) {
                 }
                 main(null);
