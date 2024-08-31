@@ -2,6 +2,7 @@ package control;
 
 import entity.*;
 import utility.*;
+import ADT.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import boundaries.DonationDistributionUI;

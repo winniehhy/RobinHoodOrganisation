@@ -2,11 +2,11 @@ package control;
 
 import entity.*;
 import utility.*;
+import ADT.*;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
+import java.util.Iterator;
 
 import boundaries.DonationManagementUI;
 
@@ -208,12 +208,12 @@ public class DonationManagement {
         String donorName = StringValidation.alphabetValidation("Enter donor name to amend: ");
         int donationType = ui.inputDonationType();
         DoublyLinkedQueue<Donation> queue = getQueueByDonationType(donationType, cashQueue, bookQueue, toyQueue);
-
+    
         if (queue.isEmpty()) {
             ui.showErrorMessage("No donations available to amend.");
             return;
         }
-
+    
         Donation donationToAmend = null;
         for (Donation donation : queue) {
             if (donation.getDonorName().equalsIgnoreCase(donorName)) {
@@ -221,7 +221,7 @@ public class DonationManagement {
                 break;
             }
         }
-
+    
         if (donationToAmend != null) {
             ui.showDonationDetails(donationToAmend);
             char confirmation = ui.getConfirmation("Do you want to update details? (Y/N): ");
@@ -229,11 +229,9 @@ public class DonationManagement {
                 System.out.println("Choose the detail to update:");
                 System.out.println("[1] Donor Name");
                 System.out.println("[2] Donation Date");
-                if (donationType == 1) {
-                    System.out.println("[3] Amount");
-                }
+                System.out.println("[3] Amount");
                 int updateChoice = ui.inputInteger("Enter your choice: ");
-
+    
                 switch (updateChoice) {
                     case 1:
                         String newDonorName = StringValidation.alphabetValidation("Enter new donor name: ");
@@ -244,17 +242,13 @@ public class DonationManagement {
                         donationToAmend.setDonationDate(newDonationDate);
                         break;
                     case 3:
-                        if (donationType == 1) {
-                            int newAmount = ui.inputInteger("Enter new amount: ");
-                            donationToAmend.setAmount(newAmount);
-                        } else {
-                            ui.showErrorMessage("Invalid choice.");
-                        }
+                        int newAmount = ui.inputInteger("Enter new amount: ");
+                        donationToAmend.setAmount(newAmount);
                         break;
                     default:
                         ui.showErrorMessage("Invalid choice.");
                 }
-
+    
                 ui.showMessage("Donation details updated successfully!");
                 ui.showDonationDetails(donationToAmend);
             } else {
@@ -263,9 +257,10 @@ public class DonationManagement {
         } else {
             ui.showErrorMessage("No donation found for the donor: " + donorName + " in the selected donation type.");
         }
-
+    
         ui.displayContinue();
     }
+    
 
     public static void listDonations(DoublyLinkedQueue<Donation> cashQueue, DoublyLinkedQueue<Donation> bookQueue, DoublyLinkedQueue<Donation> toyQueue) {
         int option = ui.listDonationsOptions();
@@ -390,18 +385,24 @@ public class DonationManagement {
                     System.out.printf("Total cash donations in %d: RM %d\n", year, total);
                 }
             } else if (choice == 2) {
-                Map<String, Integer> donorFrequency = new HashMap<>();
+                SimpleHashMap<String, Integer> donorFrequency = new SimpleHashMap<>();
     
                 for (Donation donation : cashQueue) {
-                    donorFrequency.put(donation.getDonorName(), donorFrequency.getOrDefault(donation.getDonorName(), 0) + 1);
+                    String donorName = donation.getDonorName();
+                    int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
+                    donorFrequency.add(donorName, currentFrequency + 1);
                 }
     
                 for (Donation donation : bookQueue) {
-                    donorFrequency.put(donation.getDonorName(), donorFrequency.getOrDefault(donation.getDonorName(), 0) + 1);
+                    String donorName = donation.getDonorName();
+                    int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
+                    donorFrequency.add(donorName, currentFrequency + 1);
                 }
     
                 for (Donation donation : toyQueue) {
-                    donorFrequency.put(donation.getDonorName(), donorFrequency.getOrDefault(donation.getDonorName(), 0) + 1);
+                    String donorName = donation.getDonorName();
+                    int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
+                    donorFrequency.add(donorName, currentFrequency + 1);
                 }
     
                 System.out.println("Filter by Frequency:");
@@ -409,9 +410,12 @@ public class DonationManagement {
                 System.out.println("[2] Regular Donor");
                 int freqChoice = utility.IntValidation.inputChoice(2);
     
-                for (Map.Entry<String, Integer> entry : donorFrequency.entrySet()) {
-                    if ((freqChoice == 1 && entry.getValue() == 1) || (freqChoice == 2 && entry.getValue() > 1)) {
-                        System.out.println("Donor: " + entry.getKey() + " | Donations: " + entry.getValue());
+                Iterator<String> keyIterator = donorFrequency.iterator();
+                while (keyIterator.hasNext()) {
+                    String key = keyIterator.next();
+                    Integer value = donorFrequency.get(key);
+                    if ((freqChoice == 1 && value == 1) || (freqChoice == 2 && value > 1)) {
+                        System.out.println("Donor: " + key + " | Donations: " + value);
                     }
                 }
             } else if (choice == 3) {
@@ -432,6 +436,8 @@ public class DonationManagement {
             ui.displayContinue();
         } while (choice != 4);
     }
+    
+
 
     public static void displaySummary(DoublyLinkedQueue<Donation> cashQueue, DoublyLinkedQueue<Donation> bookQueue, DoublyLinkedQueue<Donation> toyQueue) {
 

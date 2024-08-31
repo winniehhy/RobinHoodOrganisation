@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import utility.*;
+import ADT.*;
 
 /**
  * Manages the controls of volunteer managements.

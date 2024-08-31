@@ -2,7 +2,7 @@ package control;
 
 import boundaries.*;
 import entity.*;
-import utility.DoublyLinkedQueue;
+import ADT.*;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -49,7 +49,6 @@ public class RobinHoodOrganisation {
             donation3.setDonationType(1); // Assuming 1 represents Cash
             cashDistributionQueue.enqueue(donation3);
             
-            // Adding sample data to book donation and distribution queues
             Donation donation4 = new Donation("Charlie", "N/A", 10, formatter.parse("01-02-2023"), null);
             donation4.setDonationType(2); // Assuming 2 represents Book
             bookDonationQueue.enqueue(donation4);
@@ -62,7 +61,6 @@ public class RobinHoodOrganisation {
             donation6.setDonationType(2); // Assuming 2 represents Book
             bookDistributionQueue.enqueue(donation6);
             
-            // Adding sample data to toy donation and distribution queues
             Donation donation7 = new Donation("Eve", "N/A", 5, formatter.parse("01-03-2023"), null);
             donation7.setDonationType(3); // Assuming 3 represents Toy
             toyDonationQueue.enqueue(donation7);
@@ -75,15 +73,12 @@ public class RobinHoodOrganisation {
             donation9.setDonationType(3); // Assuming 3 represents Toy
             toyDistributionQueue.enqueue(donation9);
             
-            // Adding sample data to volunteer queue
             volunteerQueue.enqueue(new Volunteer("V001", "John Doe", 30, "123-456-7890"));
             volunteerQueue.enqueue(new Volunteer("V002", "Jane Smith", 25, "098-765-4321"));
             
-            // Adding sample data to event queue
             eventQueue.enqueue(new Event("E001", "Charity Run", "Annual charity run event", formatter.parse("01-12-2023")));
             eventQueue.enqueue(new Event("E002", "Food Drive", "Community food drive", formatter.parse("15-11-2023")));
             
-            // Adding sample data to event assignment queue
             eventAssignmentQueue.enqueue(new EventAssignment("John Doe", "Charity Run"));
             eventAssignmentQueue.enqueue(new EventAssignment("Jane Smith", "Food Drive"));
         } catch (Exception e) {

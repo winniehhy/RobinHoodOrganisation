@@ -2,6 +2,7 @@ package boundaries;
 
 import entity.Donation;
 import utility.*;
+import ADT.*;
 
 import java.util.Scanner;
 

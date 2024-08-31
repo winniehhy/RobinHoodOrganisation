@@ -96,10 +96,14 @@ public class StringValidation {
             String input = scanner.nextLine().trim(); // Read the input and trim any leading/trailing spaces
 
             // Validate the input against the date format
-            try {
-                date = dateFormat.parse(input); // Attempt to parse the input as a date
-                valid = true; // Input is valid, exit the loop
-            } catch (ParseException e) {
+            if (input.matches("\\d{2}-\\d{2}-\\d{4}")) { // Regex to ensure correct format (dd-MM-yyyy)
+                try {
+                    date = dateFormat.parse(input); // Attempt to parse the input as a date
+                    valid = true; // Input is valid, exit the loop
+                } catch (ParseException e) {
+                    System.out.println("Invalid date. Please enter a valid date in dd-MM-yyyy format.");
+                }
+            } else {
                 System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy format.");
             }
         }
