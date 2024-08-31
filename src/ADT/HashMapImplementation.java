@@ -3,14 +3,14 @@ package ADT;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class SimpleHashMap<K, V> implements HashMap<K, V>, Iterable<K> {
+public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
     private static final int STARTING_SIZE = 16;
     private static final double MAX_LOAD_FACTOR = 0.75;
     private MapEntry<K, V>[] table;
     private int size;
 
     @SuppressWarnings("unchecked")
-    public SimpleHashMap() {
+    public HashMapImplementation() {
         table = (MapEntry<K, V>[]) new MapEntry[STARTING_SIZE];
         size = 0;
     }

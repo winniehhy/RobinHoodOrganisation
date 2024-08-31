@@ -385,7 +385,7 @@ public class DonationManagement {
                     System.out.printf("Total cash donations in %d: RM %d\n", year, total);
                 }
             } else if (choice == 2) {
-                SimpleHashMap<String, Integer> donorFrequency = new SimpleHashMap<>();
+                HashMapImplementation<String, Integer> donorFrequency = new HashMapImplementation<>();
     
                 for (Donation donation : cashQueue) {
                     String donorName = donation.getDonorName();
@@ -442,14 +442,14 @@ public class DonationManagement {
     public static void displaySummary(DoublyLinkedQueue<Donation> cashQueue, DoublyLinkedQueue<Donation> bookQueue, DoublyLinkedQueue<Donation> toyQueue) {
 
         ui.clearScreen();
-        System.out.printf("%60s", "Donation Summary\n");
+        System.out.printf("%55s", "Donation Summary\n");
     
         for (int i = 0; i < 90; i++) {
             System.out.print("=");
         }
         System.out.println();
         System.out.printf("     | %-20s | %-8s | %-27s | %-17s |\n", "Donor", "Type", "Donation Date", "Amount");
-        for (int i = 0; i < 103; i++) {
+        for (int i = 0; i < 90; i++) {
             System.out.print("=");
         }
         System.out.println();
@@ -475,7 +475,7 @@ public class DonationManagement {
             }
         }
     
-        for (int i = 0; i < 103; i++) {
+        for (int i = 0; i < 90; i++) {
             System.out.print("=");
         }
         System.out.println();

@@ -105,7 +105,7 @@ public class DonationManagementUI {
                                         donation.getDonationDate() != null ? donation.getDonationDate() : "N/A");
         } else { // Toy or Book Donation
             String itemType = donation.getDonationType() == 2 ? "Books" : "Toys";
-            formattedRow = String.format("| %-15s  | %-15s | %-12d | %-25s |\n",
+            formattedRow = String.format("| %-15s  | %-15s | %-15d | %-25s |\n",
                                         donation.getDonorName(),
                                         itemType,
                                         donation.getAmount(),
