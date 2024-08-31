@@ -17,6 +17,16 @@ import java.util.Iterator;
  */
 public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
     /**
+     * Initializes the queue, preparing it for use.
+     */
+    @Override
+    public void initialize() {
+        front = null;
+        rear = null;
+        size = 0;
+    }
+    
+    /**
      * A private inner class representing a node in the doubly-linked list.
      * Each node stores a reference to the data and pointers to the next
      * and previous nodes in the list.
@@ -158,21 +168,121 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return data;
     }
 
-    // Checks if the queue is empty.
+    /**
+     * Checks if the queue is empty.
+     * 
+     * @return true if the queue is empty, false otherwise
+     */
     public boolean isEmpty() {
         return size == 0;
     }
     
-    //Returns the number of elements in the queue.
+    /**
+     * Returns the number of elements in the queue.
+     * 
+     * @return the size of the queue
+     */
     public int size() {
         return size;
     }
 
     /**
-     * Checks if the queue contains the specified element.
+     * Removes all elements from the queue.
+     */
+    @Override
+    public void clear() {
+        front = null;
+        rear = null;
+        size = 0;
+    }
+
+    /**
+     * Adds an item to the back of the queue, returning true upon success.
      * 
-     * @param data the element to check for
-     * @return true if the queue contains the element, false otherwise
+     * @param item the element to be added to the back of the queue
+     * @return true if the element was added successfully
+     */
+    @Override
+    public boolean offer(E item) {
+        enqueue(item);
+        return true;
+    }
+
+    /**
+     * Retrieves and removes the head of the queue, or returns null if the queue is empty.
+     * 
+     * @return the element at the front of the queue, or null if the queue is empty
+     */
+    @Override
+    public E poll() {
+        if (front == null) {
+            return null;
+        }
+        return dequeue();
+    }
+
+    /**
+     * Retrieves, but does not remove, the head of this queue.
+     * 
+     * @return the element at the front of the queue
+     * @throws IllegalStateException if the queue is empty
+     */
+    @Override
+    public E element() {
+        return peek();
+    }
+
+
+    /**
+     * Converts the queue to an array.
+     * 
+     * @return an array of all elements in the queue
+     */
+    @Override
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        Node current = front;
+        int index = 0;
+        while (current != null) {
+            array[index++] = current.data;
+            current = current.next;
+        }
+        return array;
+    }
+
+    /**
+     * Provides an iterator to access each element in the queue without needing 
+     * to directly interact with the queue's underlying structure.
+     * 
+     * @return an iterator over the elements in the queue
+     */
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private Node current = front;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                E data = current.data;
+                current = current.next;
+                return data;
+            }
+        };
+    }
+
+    /**
+     * Checks if the queue contains a specific item.
+     * 
+     * @param item the element to check for
+     * @return true if the queue contains the item, false otherwise
      */
     public boolean contains(E data) {
         Node current = front;
@@ -186,10 +296,10 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
     }
 
     /**
-     * Removes the first occurrence of the specified element from the queue, if it is present.
+     * Removes the first occurrence of the specified element from the queue, if present.
      * 
-     * @param item the element to be removed
-     * @return true if the element was removed, false otherwise
+     * @param item the element to be removed from the queue, if present
+     * @return true if the queue contained the specified element and it was removed
      */
     public boolean remove(E item) {
         Node current = front;
@@ -218,97 +328,5 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
             current = current.next;
         }
         return false;
-    }
-
-    //Initialize the queue by resetting it to an empty state
-    @Override
-    public void initialize() {
-        front = null;
-        rear = null;
-        size = 0;
-    }
-
-    //Clears the queue
-    @Override
-    public void clear() {
-        front = null;
-        rear = null;
-        size = 0;
-    }
-
-    //Adds element to the end of the queue
-    @Override
-    public boolean offer(E item) {
-        enqueue(item);
-        return true;
-    }
-
-    /**
-     * Removes and returns the element at the front of the queue,
-     * or returns null if the queue is empty.
-     * 
-     * @return the element at the front of the queue, or null if the queue is empty
-     */
-    @Override
-    public E poll() {
-        if (front == null) {
-            return null;
-        }
-        return dequeue();
-    }
-
-    /**
-     * Returns, but does not remove, the element at the front of the queue.
-     * 
-     * @return the element at the front of the queue
-     */
-    @Override
-    public E element() {
-        return peek();
-    }
-
-
-    /**
-     * Returns an array containing all of the elements in the queue in proper sequence.
-     * 
-     * @return an array containing all of the elements in the queue
-     */
-    @Override
-    public Object[] toArray() {
-        Object[] array = new Object[size];
-        Node current = front;
-        int index = 0;
-        while (current != null) {
-            array[index++] = current.data;
-            current = current.next;
-        }
-        return array;
-    }
-
-    /**
-     * Returns an iterator over the elements in this queue in proper sequence.
-     * 
-     * @return an iterator over the elements in this queue
-     */
-    @Override
-    public Iterator<E> iterator() {
-        return new Iterator<E>() {
-            private Node current = front;
-
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            @Override
-            public E next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                E data = current.data;
-                current = current.next;
-                return data;
-            }
-        };
     }
 }
