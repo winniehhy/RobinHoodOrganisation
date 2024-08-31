@@ -1,10 +1,11 @@
 package control;
 
-import entity.*;
+import entity.Donation;
 import utility.*;
-import ADT.*;
+import ADT.DoublyLinkedQueue;
+import ADT.ArrayList;
+import ADT.List;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import boundaries.DonationDistributionUI;
 
 /**
@@ -13,8 +14,6 @@ import boundaries.DonationDistributionUI;
  * @author Ho Zhi Xuen
  */
 public class DonationDistribution {
-    // Formatter to convert date objects to string format
-    static SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
     // Today's date
     static Date today = new Date();
 
@@ -285,7 +284,9 @@ public class DonationDistribution {
 
     /**
      * Displays a summary of distributions made between specified start and end dates.
-     *
+     * Uses an Array List to temporarily store distributions.
+     * Distributions are sorted descendingly based on amount.
+     * 
      * @param distributionQueue  The queue where the distributed donations are stored.
      */
     public static void displaySummary(DoublyLinkedQueue<Donation> distributionQueue) {
@@ -300,6 +301,31 @@ public class DonationDistribution {
 
         int total = 0;
         int count = 0;
+        List<Donation> summaryList = new ArrayList<>();
+
+        // Append to Array List
+        for (Donation donation : distributionQueue) {
+            if (donation.getDistributionDate().compareTo(startDate) >= 0 && donation.getDistributionDate().compareTo(endDate) <= 1) {
+                summaryList.add(donation);
+            }
+        }
+
+        // Sort Array List in descending order
+        int n = summaryList.size();
+        boolean sorted = false;
+        for (int i = 0; i < n - 1 && !sorted; i++) {
+            sorted = true;
+
+            for (int j = 0; j < n - i - 1; j++) {
+                if (summaryList.get(j).getAmount() < summaryList.get(j + 1).getAmount()) {
+                    // Swap elements
+                    Donation temp = summaryList.get(j);
+                    summaryList.set(j, summaryList.get(j + 1));
+                    summaryList.set(j + 1, temp);
+                    sorted = false;
+                }
+            }
+        }
 
         // Display the distributions within the date range
         System.out.print("\033[H\033[2J");
@@ -319,13 +345,11 @@ public class DonationDistribution {
             System.out.print("=");
         }
         System.out.println();
-        for (Donation donation : distributionQueue){
-            if (donation.getDistributionDate().compareTo(startDate) >= 0 && donation.getDistributionDate().compareTo(endDate) <= 0) {
-                System.out.printf("[%2d]", count + 1);
-                System.out.println(donation.displayTable());
-                total += donation.getAmount();
-                count ++;
-            }
+        for (Donation donation : summaryList) {
+            System.out.printf("[%2d]", count + 1);
+            System.out.println(donation.displayTable());
+            total += donation.getAmount();
+            count ++;
         }
         for (int i = 0; i < 103; i++) {
             System.out.print("=");
@@ -334,9 +358,13 @@ public class DonationDistribution {
         System.out.println("Total count: " + count);
         if (distributionQueue == RobinHoodOrganisation.cashDistributionQueue){
             System.out.println("Total distributed amount: RM " + total);
+            System.out.println("Average distributed amount: RM " + total/count);
         } else {
             System.out.println("Total distributed amount: " + total);
+            System.out.println("Average distributed amount: " + total/count);
         }
+
+        summaryList.clear();
 
         // Return to the main menu
         distributionUI.promptEnter();
