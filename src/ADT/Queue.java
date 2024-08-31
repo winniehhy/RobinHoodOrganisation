@@ -129,7 +129,7 @@ public interface Queue<E> {
      * 
      * @return an array of all elements in the queue
      */
-    Object[] toArray();
+    E[] toArray();
 
     /**
      * Provides an iterator to access each element in the queue without needing 
@@ -140,12 +140,12 @@ public interface Queue<E> {
     Iterator<E> iterator();
 
     /**
-     * Checks if the queue contains a specific element.
+     * Checks if the queue contains a specific item.
      * 
-     * @param data the element to check for
-     * @return true if the queue contains the element, false otherwise
+     * @param item the element to check for
+     * @return true if the queue contains the item, false otherwise
      */
-    boolean contains(E data);
+    boolean contains(E item);
 
     /**
      * Removes the first occurrence of the specified element from the queue, if present.
