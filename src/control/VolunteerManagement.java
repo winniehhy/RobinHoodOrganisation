@@ -2,15 +2,11 @@ package control;
 
 import boundaries.VolunteerManagementUI;
 import entity.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import utility.*;
-import ADT.*;
 
 /**
- * Manages the controls of volunteer managements.
- * 
+ *
  * @author Lee Zun Wei
  */
 
@@ -350,63 +346,54 @@ public class VolunteerManagement {
 
         System.out.print("\033[H\033[2J");
         volunteerUI.getSummary();                                    
-
+    
         // Print total number of volunteers
         int totalVolunteers = volunteerQueue.size();
         System.out.println("Total Number of Volunteers: " + totalVolunteers);
-
+    
         // Print total number of events
         int totalEvents = eventQueue.size();
         System.out.println("Total Number of Events: " + totalEvents);
-
+    
         // Print total number of volunteer assignments
         int totalAssignments = eventAssignments.size();
         System.out.println("Total Number of Volunteer Assignments: " + totalAssignments);
-
+    
         volunteerUI.getSeperator();                                   
-
-        // Find the most assigned volunteer
-        Map<String, Integer> volunteerAssignmentCount = new HashMap<>();
-        
-        for (EventAssignment assignment : eventAssignments) {
-            String volunteerID = assignment.getVolunteerID();
-            volunteerAssignmentCount.put(volunteerID, volunteerAssignmentCount.getOrDefault(volunteerID, 0) + 1);
-        }
-
-        // Determine the volunteer with the maximum assignments
-        String mostAssignedVolunteerID = null;
+    
+        // Variables to find the most assigned volunteer
+        Volunteer mostAssignedVolunteer = null;
         int maxAssignments = 0;
-        
-        for (Map.Entry<String, Integer> entry : volunteerAssignmentCount.entrySet()) {
-            if (entry.getValue() > maxAssignments) {
-                maxAssignments = entry.getValue();
-                mostAssignedVolunteerID = entry.getKey();
-            }
-        }
-
-        // Print the most assigned volunteer's details
-        if (mostAssignedVolunteerID != null) {
-            Volunteer mostAssignedVolunteer = null;
-            for (Volunteer volunteer : volunteerQueue) {
-                if (volunteer.getVolunteerID().equalsIgnoreCase(mostAssignedVolunteerID)) {
-                    mostAssignedVolunteer = volunteer;
-                    break;
+    
+        // Iterate over each volunteer and count their assignments
+        for (Volunteer volunteer : volunteerQueue) {
+            int assignmentCount = 0;
+    
+            // Count how many times this volunteer is assigned to events
+            for (EventAssignment assignment : eventAssignments) {
+                if (assignment.getVolunteerID().equalsIgnoreCase(volunteer.getVolunteerID())) {
+                    assignmentCount++;
                 }
             }
-            
-            if (mostAssignedVolunteer != null) {
-                System.out.println("\nMost Assigned Volunteer:");
-                System.out.printf("ID: %s\nName: %s\nAssignments: %d\n", 
-                                mostAssignedVolunteer.getVolunteerID(), 
-                                mostAssignedVolunteer.getVolunteerName(), 
-                                maxAssignments);
-            } else {
-                System.out.println("Could not find the most assigned volunteer.");
+    
+            // Update the most assigned volunteer if the current one has more assignments
+            if (assignmentCount > maxAssignments) {
+                maxAssignments = assignmentCount;
+                mostAssignedVolunteer = volunteer;
             }
+        }
+    
+        // Print the most assigned volunteer's details
+        if (mostAssignedVolunteer != null) {
+            System.out.println("\nMost Assigned Volunteer");
+            System.out.printf("ID: %s\nName: %s\nAssignments: %d\n", 
+                            mostAssignedVolunteer.getVolunteerID(), 
+                            mostAssignedVolunteer.getVolunteerName(), 
+                            maxAssignments);
         } else {
             System.out.println("No assignments found.");
         }
-
+    
         volunteerUI.getSeperator(); 
     }
 
@@ -471,7 +458,7 @@ public class VolunteerManagement {
                     RobinHoodOrganisation.main(null);
 
                 default:
-                    System.out.println("Invalid Input");
+                    System.out.println("Invalide Input");
                     return;
             }
         }
