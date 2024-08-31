@@ -9,6 +9,7 @@ import java.util.Iterator;
  * @param <E> the type of elements in this list
  * 
  * Authors: Ho Zhi Xuen
+ *          Lee Zun Wei
  */
 public interface List<E> extends Iterable<E> {
 
@@ -62,4 +63,14 @@ public interface List<E> extends Iterable<E> {
      *         (index < 0 || index >= size())
      */
     E set(int index, E element);
+
+    /**
+     * Returns the index of the first occurrence of the specified element in this list,
+     * or -1 if this list does not contain the element.
+     * 
+     * @param e element to search for
+     * @return the index of the first occurrence of the specified element,
+     *         or -1 if this list does not contain the element
+     */
+    int indexOf(E e);
 }
