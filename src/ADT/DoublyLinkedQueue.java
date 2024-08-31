@@ -284,7 +284,7 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
      * @param item the element to check for
      * @return true if the queue contains the item, false otherwise
      */
-    public boolean contains(E data) {
+    public boolean contains(E item) {
         Node current = front;
         while (current != null) {
             if (current.data.equals(data)) {
