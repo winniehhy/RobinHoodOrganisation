@@ -4,8 +4,6 @@ import entity.*;
 import utility.*;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 import boundaries.DonationManagementUI;
