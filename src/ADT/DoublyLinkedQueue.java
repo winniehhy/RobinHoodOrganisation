@@ -159,12 +159,6 @@ public class DoublyLinkedQueue<E> implements Queue<E>, Iterable<E> {
         return size;
     }
 
-    // Returns, but does not remove, the first element in the queue.
-    // This method is equivalent to {@link #peek()}.
-    public E getFirst() {
-        return peek();
-    }
-
     // Returns, but does not remove, the last element in the queue.
     // This method is equivalent to {@link #peek()}.
     public E getLast() {
