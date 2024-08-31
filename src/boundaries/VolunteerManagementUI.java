@@ -1,8 +1,14 @@
 package boundaries;
-
+import java.util.Scanner;
 import utility.*;
+/**
+ *
+ * @author Lee Zun Wei
+ */
+
 
 public class VolunteerManagementUI {
+    private static Scanner scanner = new Scanner(System.in);
 
     public int getMenuList(){
         System.out.print("\033[H\033[2J");
