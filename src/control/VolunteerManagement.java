@@ -1,5 +1,6 @@
 package control;
 
+import ADT.*;
 import boundaries.VolunteerManagementUI;
 import entity.*;
 import java.util.Scanner;
@@ -350,8 +351,7 @@ public class VolunteerManagement {
 
     //case 8 code for summary
     public static void volunteerSummary(DoublyLinkedQueue<Volunteer> volunteerQueue, 
-                                        DoublyLinkedQueue<Event> eventQueue, 
-                                        DoublyLinkedQueue<EventAssignment> eventAssignments){
+                                        DoublyLinkedQueue<Event> eventQueue, DoublyLinkedQueue<EventAssignment> eventAssignments){
 
         System.out.print("\033[H\033[2J");
         volunteerUI.getSummary();                                    
@@ -370,35 +370,54 @@ public class VolunteerManagement {
     
         volunteerUI.getSeperator();                                   
     
-        // Variables to find the most assigned volunteer
-        Volunteer mostAssignedVolunteer = null;
-        int maxAssignments = 0;
-    
-        // Iterate over each volunteer and count their assignments
-        for (Volunteer volunteer : volunteerQueue) {
-            int assignmentCount = 0;
-    
-            // Count how many times this volunteer is assigned to events
-            for (EventAssignment assignment : eventAssignments) {
-                if (assignment.getVolunteerID().equalsIgnoreCase(volunteer.getVolunteerID())) {
-                    assignmentCount++;
-                }
+        // Find the most assigned volunteer
+        List<String> volunteerIDs = new ArrayList<>();
+        List<Integer> assignmentCounts = new ArrayList<>();
+        
+        for (EventAssignment assignment : eventAssignments) {
+            String volunteerID = assignment.getVolunteerID();
+            int index = volunteerIDs.indexOf(volunteerID);
+            
+            if (index >= 0) {
+                // Volunteer ID found, update count
+                assignmentCounts.set(index, assignmentCounts.get(index) + 1);
+            } else {
+                // Volunteer ID not found, add new entry
+                volunteerIDs.add(volunteerID);
+                assignmentCounts.add(1);
             }
+        }
     
-            // Update the most assigned volunteer if the current one has more assignments
-            if (assignmentCount > maxAssignments) {
-                maxAssignments = assignmentCount;
-                mostAssignedVolunteer = volunteer;
+        // Determine the volunteer with the maximum assignments
+        String mostAssignedVolunteerID = null;
+        int maxAssignments = 0;
+        
+        for (int i = 0; i < volunteerIDs.size(); i++) {
+            if (assignmentCounts.get(i) > maxAssignments) {
+                maxAssignments = assignmentCounts.get(i);
+                mostAssignedVolunteerID = volunteerIDs.get(i);
             }
         }
     
         // Print the most assigned volunteer's details
-        if (mostAssignedVolunteer != null) {
-            System.out.println("\nMost Assigned Volunteer");
-            System.out.printf("ID: %s\nName: %s\nAssignments: %d\n", 
-                            mostAssignedVolunteer.getVolunteerID(), 
-                            mostAssignedVolunteer.getVolunteerName(), 
-                            maxAssignments);
+        if (mostAssignedVolunteerID != null) {
+            Volunteer mostAssignedVolunteer = null;
+            for (Volunteer volunteer : volunteerQueue) {
+                if (volunteer.getVolunteerID().equalsIgnoreCase(mostAssignedVolunteerID)) {
+                    mostAssignedVolunteer = volunteer;
+                    break;
+                }
+            }
+            
+            if (mostAssignedVolunteer != null) {
+                System.out.println("\nMost Assigned Volunteer:");
+                System.out.printf("ID: %s\nName: %s\nAssignments: %d\n", 
+                                mostAssignedVolunteer.getVolunteerID(), 
+                                mostAssignedVolunteer.getVolunteerName(), 
+                                maxAssignments);
+            } else {
+                System.out.println("Could not find the most assigned volunteer.");
+            }
         } else {
             System.out.println("No assignments found.");
         }
@@ -416,7 +435,7 @@ public class VolunteerManagement {
     }
 
     public static void main(String[] args) {
-        DoublyLinkedQueue<Volunteer> volunteerQueue = RobinHoodOrganisation.volunteerManagementQueue;
+        DoublyLinkedQueue<Volunteer> volunteerQueue = RobinHoodOrganisation.volunteerQueue;
         DoublyLinkedQueue<Event> eventQueue = RobinHoodOrganisation.eventQueue;
         DoublyLinkedQueue<EventAssignment> assignEvent = RobinHoodOrganisation.eventAssignmentQueue;
 
