@@ -464,12 +464,14 @@ public class DonationManagement {
     
         for (int i = 0; i < queues.length; i++) {
             for (Donation donation : queues[i]) {
-                System.out.printf("[%2d] | %-20s | %-8s | %-17s | RM%-14.2f |\n",
+                String amountDisplay = types[i].equals("Cash") ? "RM" + donation.getAmount() : String.valueOf(donation.getAmount());
+    
+                System.out.printf("[%2d] | %-20s | %-8s | %-27s | %-14s |\n",
                     ++count,
                     donation.getDonorName(),
                     types[i],
                     donation.getDonationDate(),
-                    (double) donation.getAmount()); // Cast amount to double
+                    amountDisplay);
     
                 totals[i] += donation.getAmount();
             }
@@ -482,12 +484,13 @@ public class DonationManagement {
     
         System.out.println("Total count: " + count);
         System.out.println("Total Cash donations: RM " + totals[0]);
-        System.out.println("Total Book donations: RM " + totals[1]);
-        System.out.println("Total Toy donations: RM " + totals[2]);
+        System.out.println("Total Book donations: " + totals[1]);
+        System.out.println("Total Toy donations: " + totals[2]);
     
         ui.displayContinue();
         main(null);
     }
+    
     
     
     
