@@ -105,4 +105,10 @@ public class Donation {
                 ", Distribution Date: " + (distributionDate != null ? formatter.format(distributionDate) : "N/A") +
                 ']';
     }
+
+    public String getDonationDetails() {
+        return "Donor: " + donorName +
+                ", Donation Date: " + (donationDate != null ? formatter.format(donationDate) : "N/A") +
+                ", Amount: RM " + amount;
+    }
 }

@@ -21,7 +21,7 @@ public class DonationManagementUI {
         System.out.println("[1] Add New Donation");
         System.out.println("[2] Remove Donation");
         System.out.println("[3] Search Donation Details");
-        System.out.println("[4] Edit Donation Details");
+        System.out.println("[4] Amend Donation Details");
         System.out.println("[5] Track Donated Items");
         System.out.println("[6] List All Current Donations");
         System.out.println("[7] Filter Donations");

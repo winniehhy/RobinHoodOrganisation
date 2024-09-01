@@ -208,18 +208,57 @@ public class DonationManagement {
         String donorName = StringValidation.alphabetValidation("Enter donor name to amend: ");
         int donationType = ui.inputDonationType();
         DoublyLinkedQueue<Donation> queue = getQueueByDonationType(donationType, cashQueue, bookQueue, toyQueue);
-    
+        
         if (queue.isEmpty()) {
             ui.showErrorMessage("No donations available to amend.");
             return;
         }
     
-        Donation donationToAmend = null;
-        for (Donation donation : queue) {
+        // Temporary queue to preserve the order of the original queue
+        DoublyLinkedQueue<Donation> tempQueue = new DoublyLinkedQueue<>();
+        DoublyLinkedQueue<Donation> donationsToAmend = new DoublyLinkedQueue<>();
+        int index = 1;
+        boolean found = false;
+    
+        // Traverse the queue and display all donations matching the donor name
+        while (!queue.isEmpty()) {
+            Donation donation = queue.dequeue();
+            tempQueue.enqueue(donation); // Keep the order in the temporary queue
+    
             if (donation.getDonorName().equalsIgnoreCase(donorName)) {
+                donationsToAmend.enqueue(donation);
+                ui.showMessage("[" + index + "] " + donation.getDonationDetails());
+                index++;
+                found = true;
+            }
+        }
+    
+        // Restore the original queue
+        while (!tempQueue.isEmpty()) {
+            queue.enqueue(tempQueue.dequeue());
+        }
+    
+        if (!found) {
+            ui.showErrorMessage("No donations available to amend.");
+            return;
+        }
+    
+        // Prompt the user to choose which donation to amend
+        int donationIndex = ui.inputInteger("Enter the number of the donation you want to amend: ") - 1;
+        if (donationIndex < 0 || donationIndex >= donationsToAmend.size()) {
+            ui.showErrorMessage("Invalid choice.");
+            return;
+        }
+    
+        // Retrieve the selected donation
+        Donation donationToAmend = null;
+        index = 0;
+        for (Donation donation : donationsToAmend) {
+            if (index == donationIndex) {
                 donationToAmend = donation;
                 break;
             }
+            index++;
         }
     
         if (donationToAmend != null) {
@@ -255,12 +294,20 @@ public class DonationManagement {
                 ui.showMessage("No changes made.");
             }
         } else {
-            ui.showErrorMessage("No donation found for the donor: " + donorName + " in the selected donation type.");
+            ui.showErrorMessage("Donation not found after selection.");
         }
     
         ui.displayContinue();
     }
     
+    private static void collectDonationsByDonorName(String donorName, DoublyLinkedQueue<Donation> queue, DoublyLinkedQueue<Donation> donationsToAmend) {
+        for (Donation donation : queue) {
+            if (donation.getDonorName().equalsIgnoreCase(donorName)) {
+                donationsToAmend.enqueue(donation);
+            }
+        }
+    }
+
 
     public static void listDonations(DoublyLinkedQueue<Donation> cashQueue, DoublyLinkedQueue<Donation> bookQueue, DoublyLinkedQueue<Donation> toyQueue) {
         int option = ui.listDonationsOptions();
