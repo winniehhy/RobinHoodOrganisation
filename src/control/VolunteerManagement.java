@@ -7,7 +7,7 @@ import java.util.Scanner;
 import utility.*;
 
 /**
- *
+ * Manages volunteer and assign volunteer to events
  * @author Lee Zun Wei
  */
 
