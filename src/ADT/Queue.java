@@ -13,6 +13,8 @@ import java.util.Iterator;
  * 
  * Authors: Heng Han Yee
  *          Ho Zhi Xuen
+ *          Lee Zun Wei
+ *          Phoon Chong Seng
  */
 public interface Queue<E> {
     /**
