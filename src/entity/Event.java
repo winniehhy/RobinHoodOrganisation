@@ -64,7 +64,7 @@ public class Event {
     }
     
     public String toTable(){
-        return String.format("%-10s%-20s%-20s%-30s",EventID,EventName,EventDetail,EventDate);
+        return String.format("%-10s%-20s%-30s%-30s",EventID,EventName,EventDetail,EventDate);
     }
     
     @Override
