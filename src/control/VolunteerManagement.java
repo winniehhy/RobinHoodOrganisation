@@ -145,6 +145,7 @@ public class VolunteerManagement {
                     if (!foundByID) {
                         System.out.println("No Volunteer Found with ID: " + volunteerID); //No volunteer ID found
                     }
+                    waitForEnter();
                     break;
 
                 case 2:
@@ -162,11 +163,11 @@ public class VolunteerManagement {
                     if (!foundByName) {
                         System.out.println("No Volunteer Found with Name: " + volunteerName); //No volunteer name found
                     }
+                    waitForEnter();
                 break;
 
                 case 3:
-                    RobinHoodOrganisation.main(null);
-                    break;
+                    return;
                     
                 default:
             }
