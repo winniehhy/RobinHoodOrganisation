@@ -11,6 +11,7 @@ public class EventManagementUI{
     Scanner scanner = new Scanner(System.in);
     
     public int getEventMenuChoice(){
+        System.out.print("\033[H\033[2J");
         System.out.println("Event Management");
         System.out.println("Please select an option");
         System.out.println("1. Add an Event");
@@ -22,8 +23,7 @@ public class EventManagementUI{
         System.out.println("7. List all event for a volunteer");
         System.out.println("8. Generate Summary report");
         System.out.println("9. Return");
-        System.out.println("10. Generate data");
-        return utility.IntValidation.inputChoice(10);
+        return utility.IntValidation.inputChoice(9);
     }
     
     public void toContinue(){
@@ -32,11 +32,13 @@ public class EventManagementUI{
     }
     
     public void AddEvent(){
+        System.out.print("\033[H\033[2J");
         System.out.println("Event Management");
         System.out.println("Create a new event");
     }
     
     public void DeleteEvent(){
+        System.out.print("\033[H\033[2J");
         System.out.println("Event Management");
         System.out.println("Delete an event");
     }
@@ -48,16 +50,25 @@ public class EventManagementUI{
     }
     
     public void SearchEvent(){
+        System.out.print("\033[H\033[2J");
         System.out.println("Event Management");
         System.out.println("Search an event");
     }
     
     public void EventNotFound(){
         System.err.println("Cant find eventID...");
-        scanner.nextLine();
+    }
+
+    public void EventEmpty(){
+        System.err.println("No event in queue...");
+    }
+
+    public void VolunteerEmpty(){
+        System.err.println("No volunteer in queue...");
     }
     
     public void AmendEvent(){
+        System.out.print("\033[H\033[2J");
         System.out.println("Event Management");
         System.out.println("Amend an event");
     }
@@ -77,34 +88,47 @@ public class EventManagementUI{
     }
     
     public void ListAllEvent(){
-        System.out.printf("%25s%20s\n","","All Event");
-        for (int i = 0; i < 80; i++) {
+        System.out.print("\033[H\033[2J");
+        System.out.printf("%36s%-20s\n","","Event Management");
+        System.out.printf("%40s%-20s\n","","All Event");
+        for (int i = 0; i < 90; i++) {
             System.out.print("_");
         }
-        System.out.println("");
-        System.out.printf("%-10s%-20s%-20s%-30s\n","eventID","Event Name",
+        System.out.println("");       
+    }
+
+    public void tableHeader(){
+        System.out.printf("%-10s%-20s%-30s%-30s\n","eventID","Event Name",
                 "Event Description","Event Date");
+    }
+
+    public void volunteerTableHeader(){
+        System.out.printf("%-13s%-26s%-8s%-12s\n","VolunteerID","Name",
+                "Age","Phone number");
     }
     
     public void VolunteerEventRemover(){
+        System.out.print("\033[H\033[2J");
         System.out.println("Event Management");
         System.out.println("Event remover for volunteer");
     }
     
     public void ListVolunteerEvent(){
+        System.out.print("\033[H\033[2J");
         System.out.println("Event Management");
         System.out.println("Search Volunteer Event");
         System.out.println("Volunteer list");
     }
     
     public void EventReport(){
-        System.out.printf("%25s%30s\n","","Event Summary Report");
-        for (int i = 0; i < 95; i++) {
+        System.out.print("\033[H\033[2J");
+        System.out.printf("%30s%30s\n","","Event Summary Report");
+        for (int i = 0; i < 105; i++) {
             System.out.print("_");
         }
-        System.out.printf("\n%-10s%-20s%-20s%-30s%-10s\n","eventID","Event Name",
+        System.out.printf("\n%-10s%-20s%-30s%-30s%-10s\n","eventID","Event Name",
                 "Event Description","Event Date","VolunteerID");
-        for (int i = 0; i < 95; i++) {
+        for (int i = 0; i < 105; i++) {
             System.out.print("_");
         }
         System.out.println("");
