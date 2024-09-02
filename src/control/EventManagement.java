@@ -2,15 +2,12 @@
 package control;
 
 import boundaries.EventManagementUI;
-import entity.Event;
-import entity.EventAssignment;
-import entity.Volunteer;
+import entity.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-import ADT.*;
-import utility.StringValidation;
+import utility.*;
 
 /**
  *
@@ -67,129 +64,159 @@ public class EventManagement {
         }
     }
     
-    public static void removeEvent(DoublyLinkedQueue<Event> event){
+    public static void removeEvent(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<EventAssignment> assignments){
         //prompt ui
         UI.DeleteEvent();
-        //get eventID to remove
-        int delEventID = utility.IntValidation.integerValidation("Enter the eventID to be deleted: ", true);
-        String eventID = String.valueOf(delEventID);
-        //search for eventID
-        Event eventToDelete = null;
-        for (Event delEvent : event){
-            if (delEvent.getEventID().equals(eventID)){
-                //delete event if found
-                eventToDelete = delEvent;
-                event.remove(delEvent);
-                System.out.println("Event with "+ delEvent + "is removed");
-                UI.toContinue();
-                break;
-            }
+        //check event existence
+        if(event.isEmpty()){
+            UI.EventEmpty();
+            UI.toContinue();
         }
-        //check whether its empty or the event cant be find
-        if(eventToDelete == null && event.isEmpty()){
-            System.err.println("No event available");   
-            scanner.nextLine();
-        }else if(eventToDelete == null){
-            UI.DeleteEventFail();
-        } 
+        else{
+            //print all event
+            UI.tableHeader();
+            for (Event AllEvent : event){
+                System.out.println(AllEvent.toTable());
+            }
+            //get eventID to remove
+            int delEventID = utility.IntValidation.integerValidation("Enter the eventID to be deleted: ", true);
+            String eventID = String.valueOf(delEventID);
+            //search for eventID
+            Event eventToDelete = null;
+            for (Event delEvent : event){
+                if (delEvent.getEventID().equals(eventID)){
+                    //delete event if found
+                    eventToDelete = delEvent;
+                    event.remove(delEvent);
+                    for (EventAssignment delVolunteerEvent : assignments){
+                        if (delVolunteerEvent.getEventID().equals(eventID)){
+                        //delete event if found
+                        assignments.remove(delVolunteerEvent);
+                        }
+                    }
+                    System.out.println("Event with "+ delEvent + "is removed");
+                    UI.toContinue();
+                    break;
+                }
+            }
+            //check whether its empty or the event cant be find
+            if(eventToDelete == null){
+                UI.DeleteEventFail();
+            } 
+        }
     }
     
     public static void searchEvent(DoublyLinkedQueue<Event> event){
         //prompt UI
         UI.SearchEvent();
-        //get eventID to search for details
-        int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to search for an event:", true);
-        String eventID = String.valueOf(SearchEventID);
-        //search for the eventID
-        Event eventToSearch = null;
-        for (Event SerEvent : event){
-            if (SerEvent.getEventID().equals(eventID)){
-                eventToSearch = SerEvent;
-                System.out.println(SerEvent);
-                UI.toContinue();
-                break;
-            }
+        //check event existence
+        if(event.isEmpty()){
+            UI.EventEmpty();
         }
-        //check whether its empty or the event cant be find
-        if(eventToSearch == null && event.isEmpty()){
-            System.err.println("No event available"); 
-            scanner.nextLine();
-        }else if(eventToSearch == null){
-            UI.EventNotFound();
-        } 
+        else{
+            //get eventID to search for details
+            int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to search for an event:", true);
+            String eventID = String.valueOf(SearchEventID);
+            //search for the eventID
+            Event eventToSearch = null;
+            for (Event SerEvent : event){
+                if (SerEvent.getEventID().equals(eventID)){
+                    eventToSearch = SerEvent;
+                    System.out.println(SerEvent);
+                    break;
+                }
+            }
+            //check whether its empty or the event cant be find
+            if(eventToSearch == null){
+                UI.EventNotFound();
+            } 
+        }
+        UI.toContinue();
     }
     
     public static void AmendEvent(DoublyLinkedQueue<Event> event){
         //prompt UI
         UI.AmendEvent();
-        //get EventID that need to be modified
-        int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to modify:", true);
-        String eventID = String.valueOf(SearchEventID);
-        //Search for eventID
-        Event eventToSearch = null;
-        for (Event SerEvent : event){
-            if (SerEvent.getEventID().equals(eventID)){
-                eventToSearch = SerEvent;
-                System.out.println(SerEvent);
-                break;
+        //check event exisrence
+        if(event.isEmpty()){
+            UI.EventEmpty();
+        }else{
+            //print all event
+            UI.tableHeader();
+            for (Event AllEvent : event){
+                System.out.println(AllEvent.toTable());
             }
-        }
-        //check event existence
-        if(eventToSearch == null && event.isEmpty()){
-            System.err.println("No event available");
-            scanner.nextLine();
-        }else if(eventToSearch == null){
-            UI.EventNotFound();
-            scanner.nextLine();
-        } else{
-            //update event detail
-            String eventName = eventToSearch.getEventName();
-            String eventDetail = eventToSearch.getEventDetail();
-            Date eventDate = eventToSearch.getEventDate();
-            //get event update option
-            int option = UI.AmendEventOption();       
-            switch(option){
-                case 1: 
-                    System.out.println("Enter new event Name:");
-                    eventName = scanner.nextLine();
-                    eventToSearch.setEventName(eventName);
+            //get EventID that need to be modified
+            int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to modify:", true);
+            String eventID = String.valueOf(SearchEventID);
+            //Search for eventID
+            System.out.print("\033[H\033[2J");
+            Event eventToSearch = null;
+            for (Event SerEvent : event){
+                if (SerEvent.getEventID().equals(eventID)){
+                    eventToSearch = SerEvent;
+                    System.out.println(SerEvent);
                     break;
-                case 2: 
-                    System.out.println("Enter new event Detail:");
-                    eventDetail = scanner.nextLine();
-                    eventToSearch.setEventDetail(eventDetail);
-                    break;
-                case 3: 
-                    System.out.println("Enter new event Detail:");
-                    eventDate = StringValidation.dateValidation("Enter event date (dd-mm-yyyy): ");
-                    eventToSearch.setEventDate(eventDate);
-                    break;
-                case 4:
-                    break;
-                default:
+                }
             }
-            //update event in the queeu by remove previous event from queue 
-            //and requeue the altered event 
-            Event modEvent = new Event(eventID,eventName,eventDetail,eventDate);
-            event.remove(eventToSearch);
-            event.enqueue(modEvent);
-            UI.AmendSuccessful();
-            System.out.println(modEvent);
-            UI.toContinue();
+            //check event existence
+            if(eventToSearch == null && event.isEmpty()){
+                System.err.println("No event available");
+            }else if(eventToSearch == null){
+                UI.EventNotFound();
+            } else{
+                //update event detail
+                String eventName = eventToSearch.getEventName();
+                String eventDetail = eventToSearch.getEventDetail();
+                Date eventDate = eventToSearch.getEventDate();
+                //get event update option
+                int option = UI.AmendEventOption();       
+                switch(option){
+                    case 1: 
+                        System.out.print("Enter new event Name:");
+                        eventName = scanner.nextLine();
+                        eventToSearch.setEventName(eventName);
+                        break;
+                    case 2: 
+                        System.out.print("Enter new event Detail:");
+                        eventDetail = scanner.nextLine();
+                        eventToSearch.setEventDetail(eventDetail);
+                        break;
+                    case 3: 
+                        eventDate = StringValidation.dateValidation("Enter event date (dd-mm-yyyy): ");
+                        eventToSearch.setEventDate(eventDate);
+                        break;
+                    case 4:
+                        break;
+                    default:
+                }
+                //update event in the queeu by remove previous event from queue 
+                //and requeue the altered event 
+                Event modEvent = new Event(eventID,eventName,eventDetail,eventDate);
+                event.remove(eventToSearch);
+                event.enqueue(modEvent);
+                UI.AmendSuccessful();
+                System.out.println(modEvent);      
+            }
         }
         
+        UI.toContinue();
     }  
     
     public static void AllEvent(DoublyLinkedQueue<Event> event){
         //UI in table format
         UI.ListAllEvent();
-        //search for all event and print it as a table
-        for (Event AllEvent : event){
-            System.out.println(AllEvent.toTable());
-        }
-        //prompt when there is no event in queue
+        //check event existence
         if(event.isEmpty()){
-            System.err.println("No event available");    
+            UI.EventEmpty();    
+        }
+        else{
+            //table header
+            UI.tableHeader();
+            //search for all event and print it as a table
+            for (Event AllEvent : event){
+                System.out.println(AllEvent.toTable());
+            }
         }
         UI.toContinue();
     }
@@ -198,91 +225,111 @@ public class EventManagement {
         UI.VolunteerEventRemover();
         Boolean eventExist = false;
         Boolean volunteerExist = false;
-        //get eventID to search for details
-        int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to search for an event:", true);
-        String eventID = String.valueOf(SearchEventID);
-        //search for the eventID
-        Event eventToSearch = null;
-        for (Event SerEvent : event){
-            if (SerEvent.getEventID().equals(eventID)){
-                eventToSearch = SerEvent;
-                System.out.println(SerEvent);
-                eventExist = true;
-                break;
+        //check event existence
+        if (event.isEmpty()){
+            UI.EventEmpty();
+            UI.toContinue();
+        }
+        else{
+            //print all event
+            UI.tableHeader();
+            for (Event AllEvent : event){
+            System.out.println(AllEvent.toTable());
             }
-        }
-        //check whether its empty or the event cant be find
-        if(eventToSearch == null && event.isEmpty()){
-            eventExist = false;
-            System.err.println("No event available"); 
-            scanner.nextLine();
-        }else if(eventToSearch == null){
-            eventExist = false;
-            UI.EventNotFound();
-        }
-        //if event exist, list volunteer in event
-        if(eventExist == true){
-            System.out.println("Vounteer in event " + eventID);
-            //check for volunteer in an event
-            for (EventAssignment checkVonlunteerEvent : assignments){
-                if (checkVonlunteerEvent.getEventID().equals(eventID)){
-                    String VolunteerEvent = checkVonlunteerEvent.getVolunteerID();
-                    volunteerExist = true;
-                    //list volunteer
-                    for (Volunteer checkVolunteer : volunteer){
-                        if (checkVolunteer.getVolunteerID().equals(VolunteerEvent)){
-                            System.out.println(checkVolunteer);
-                        }
-                            
-                    }
+            //get eventID to search for details
+            int SearchEventID = utility.IntValidation.integerValidation("Enter an eventID to search for an event:", true);
+            String eventID = String.valueOf(SearchEventID);
+            //search for the eventID
+            System.out.print("\033[H\033[2J");
+            Event eventToSearch = null;
+            for (Event SerEvent : event){
+                if (SerEvent.getEventID().equals(eventID)){
+                    eventToSearch = SerEvent;
+                    System.out.println(SerEvent);
+                    eventExist = true;
+                    break;
                 }
             }
-            //if volunteer in event,ask volunteerID to delete
-            if (volunteerExist == true){
-                System.out.print("Enter volunteer ID to remove(any input to cancel): ");
-                String ID = scanner.nextLine();
-                //check for volunteerID to remove
-                for (EventAssignment DelVolunteer : assignments){
-                    if ((DelVolunteer.getVolunteerID().equals(ID)) && (DelVolunteer.getEventID().equals(eventID))){
+            //check whether its empty or the event cant be find
+            if(eventToSearch == null){
+                eventExist = false;
+                UI.EventNotFound();
+            }
+            //if event exist, list volunteer in event
+            if(eventExist == true){
+                System.out.println("Volunteer in event " + eventID);
+                //check for volunteer in an event
+                for (EventAssignment checkVonlunteerEvent : assignments){
+                    if (checkVonlunteerEvent.getEventID().equals(eventID)){
+                        String VolunteerEvent = checkVonlunteerEvent.getVolunteerID();
+                        volunteerExist = true;
+                        //list volunteer
+                        for (Volunteer checkVolunteer : volunteer){
+                            if (checkVolunteer.getVolunteerID().equals(VolunteerEvent)){
+                                System.out.println(checkVolunteer);
+                            }
+                            
+                        }
+                    }
+                }
+                //if volunteer in event,ask volunteerID to delete
+                if (volunteerExist == true){
+                    System.out.print("Enter volunteer ID to remove(any input to cancel): ");
+                    String ID = scanner.nextLine();
+                    //check for volunteerID to remove
+                    for (EventAssignment DelVolunteer : assignments){
+                        if ((DelVolunteer.getVolunteerID().equals(ID)) && (DelVolunteer.getEventID().equals(eventID))){
                             assignments.remove(DelVolunteer);
                             System.err.println("Volunteer removed from event...");
-                            UI.toContinue();
+                        }
                     }
-                }
-            }else{
-                //if there is no volunteer in events
-                System.err.println("There is no volunteer in this event.");
-                UI.toContinue();
+                }else{
+                    //if there is no volunteer in events
+                    System.err.println("There is no volunteer in this event.");
+                }       
             }
-            
         }
-        
+        UI.toContinue();        
     }
     
     public static void FindVolunteerEvent(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<Volunteer> volunteer, DoublyLinkedQueue<EventAssignment> assignments){
         //prompt banner
         UI.ListVolunteerEvent();
-        //list out volunteer in queue
-        for (Volunteer allVolunteer : volunteer){
-            System.out.println(allVolunteer);
+        String eventFound = null;
+        //check volunteer existence
+        if(volunteer.isEmpty()){
+            UI.VolunteerEmpty();
         }
-        //ask for volunteerID
-        System.out.print("Enter an volunteerID to search for its event:");
-        String SearchVolunteerID = scanner.nextLine();
-        //list out volunteer event
-        System.out.println("Event list for VolunteerID: " + SearchVolunteerID);
-        for (EventAssignment getEvent : assignments){
-            //if there is matching event with volunteer, print volunteer event
-            if (getEvent.getVolunteerID().equals(SearchVolunteerID)){
-                String eventFound = getEvent.getEventID();
-                //print volunteer event
-                for (Event listEvent : event){
-                    if(listEvent.getEventID().equals(eventFound))
-                    System.out.println(listEvent);                
+        else{
+            //list out volunteer in queue
+            UI.volunteerTableHeader();
+            for (Volunteer allVolunteer : volunteer){
+                System.out.println(allVolunteer);
+            }
+            //ask for volunteerID
+            System.out.print("Enter an volunteerID to search for its event:");
+            String SearchVolunteerID = scanner.nextLine();
+            //list out volunteer event
+            System.out.print("\033[H\033[2J");
+            UI.ListVolunteerEvent();
+            System.out.println("Event list for VolunteerID: " + SearchVolunteerID);
+            UI.tableHeader();
+            for (EventAssignment getEvent : assignments){
+                //if there is matching event with volunteer, print volunteer event
+                if (getEvent.getVolunteerID().equals(SearchVolunteerID)){
+                    eventFound = getEvent.getEventID();
+                    //print volunteer event
+                    for (Event listEvent : event){
+                        if(listEvent.getEventID().equals(eventFound))
+                        System.out.println(listEvent.toTable());                
+                    }
                 }
             }
+            //if no event found
+            if (eventFound == null){
+                UI.EventNotFound();
+            }
         }
-        //searching done
         UI.toContinue();
     }
     
@@ -291,45 +338,85 @@ public class EventManagement {
         int totalEvent = 0,totalVolunteer = 0;
         int compareEvent = 0;
         String popularEventID = null,compareEventID = null;
-        //report template
-        UI.EventReport();
-        //check for event and print event details
-        for(Event allEvent: event){
-            System.out.print(allEvent.toTable());
-            String eventID = allEvent.getEventID();
-            int popularEvent = 0;
-            //check for volunteer in event
-            for(EventAssignment allVolunteer: assignments){
-                if(allVolunteer.getEventID().equals(eventID)){
-                    System.out.printf("%-10s\n",allVolunteer.getVolunteerID());
-                    System.out.printf("%-80s","");
-                    totalVolunteer ++;
-                    popularEvent ++;
-                    compareEventID = allVolunteer.getEventID();
-                }
-            }
-            //check whether event is the most popular
-            if(popularEvent>compareEvent){
-                compareEvent = popularEvent;
-                popularEventID = compareEventID;
-            }
-            //print total volunteer in an event
-            System.out.println(popularEvent+" Volunteer");
-            System.out.println("");
-            totalEvent ++;
+        if (event.isEmpty()){
+            UI.EventEmpty();
         }
-        //analysis for total event and total volunteer
-        UI.totalEvent();
-        System.out.println("Total event: " + totalEvent);
-        System.out.println("Total volunteer: " + totalVolunteer);
-        //analysis for most popular event
-        UI.mostPopularEvent();
-        System.out.println("eventID             : " + popularEventID);
-        System.out.println("Number of Volunteer : " + compareEvent);
+        else{
+            //report template
+            UI.EventReport();
+            //check for event and print event details
+            for(Event allEvent: event){
+                System.out.print(allEvent.toTable());
+                String eventID = allEvent.getEventID();
+                int popularEvent = 0;
+                //check for volunteer in event
+                for(EventAssignment allVolunteer: assignments){
+                    if(allVolunteer.getEventID().equals(eventID)){
+                        System.out.printf("%-10s\n",allVolunteer.getVolunteerID());
+                        System.out.printf("%-90s","");
+                        totalVolunteer ++;
+                        popularEvent ++;
+                        compareEventID = allVolunteer.getEventID();
+                    }
+                }
+                //check whether event is the most popular
+                if(popularEvent>compareEvent){
+                    compareEvent = popularEvent;
+                    popularEventID = compareEventID;
+                }
+                //print total volunteer in an event
+                System.out.println(popularEvent+" Volunteer");
+                System.out.println("");
+                totalEvent ++;
+            }
+            //analysis for total event and total volunteer
+            UI.totalEvent();
+            System.out.println("Total event: " + totalEvent);
+            System.out.println("Total volunteer: " + totalVolunteer);
+            //analysis for most popular event
+            UI.mostPopularEvent();
+            System.out.println("eventID             : " + popularEventID);
+            System.out.println("Number of Volunteer : " + compareEvent);
+        }
         //report generation end
         UI.toContinue();
         
     }
+    
+    public static void sortQueue(DoublyLinkedQueue<Event> eventQueue) {
+    if (eventQueue.isEmpty()) {
+        return; // If the queue is empty, there's nothing to sort.
+    }
+    //new array to act as sorting buffer
+    DoublyLinkedQueue<Event> sortedQueue = new DoublyLinkedQueue<>();
+    
+    while (!eventQueue.isEmpty()) {
+        // Find the event with the lowest ID
+        Event lowestEvent = null;
+        int lowestID = Integer.MAX_VALUE;
+
+        for (Event currentEvent : eventQueue) {
+            int currentID = Integer.parseInt(currentEvent.getEventID());
+            if (currentID < lowestID) {
+                lowestID = currentID;
+                lowestEvent = currentEvent;
+            }
+        }
+        
+        // Remove the lowest event from the original queue and add it to the sorted queue
+        if (lowestEvent != null) {
+            eventQueue.remove(lowestEvent);
+            sortedQueue.enqueue(lowestEvent);
+        }
+    }
+    
+    // Transfer sorted events back to the original queue
+    while (!sortedQueue.isEmpty()) {
+        eventQueue.enqueue(sortedQueue.dequeue());
+    }
+}
+
+    
     //To generate data if other subsystem not working 
     public static void generateData(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<Volunteer> volunteer, DoublyLinkedQueue<EventAssignment> assignments){
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -381,7 +468,8 @@ public class EventManagement {
                 break;
             case 2:
                 //remove an event
-                removeEvent(event);
+                removeEvent(event,assignEvent);
+                sortQueue(event);
                 main(null);
                 break;
             case 3:
@@ -392,6 +480,7 @@ public class EventManagement {
             case 4:
                 //Amend an event details
                 AmendEvent(event);
+                sortQueue(event);
                 main(null);
                 break;
             case 5:
