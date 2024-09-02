@@ -159,9 +159,7 @@ public class EventManagement {
                 }
             }
             //check event existence
-            if(eventToSearch == null && event.isEmpty()){
-                System.err.println("No event available");
-            }else if(eventToSearch == null){
+            if(eventToSearch == null){
                 UI.EventNotFound();
             } else{
                 //update event detail
