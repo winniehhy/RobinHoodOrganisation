@@ -3,10 +3,16 @@ package ADT;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/*
+/**
+ * A simple implementation of a HashMap using separate chaining for collision resolution.
+ * This implementation provides basic operations such as add, remove, get, and contains.
+ * It also supports resizing the backing table when the load factor exceeds a specified threshold.
+ * 
+ * @param <K> the type of keys maintained by this map
+ * @param <V> the type of mapped values
+ * 
  * @author Heng Han Yee
  */
-
 public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
     private static final int STARTING_SIZE = 16;
     private static final double MAX_LOAD_FACTOR = 0.75;
@@ -19,12 +25,25 @@ public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
         size = 0;
     }
 
+    /**
+     * Adds a key-value pair to the map.
+     * 
+     * @param key the key to be added
+     * @param value the value to be associated with the key
+     * @return the previous value associated with the key, or null if there was no mapping for the key
+     */
     @Override
     public V add(K key, V value) {
         return put(key, value);
     }
 
-    // Assuming put should return V
+    /**
+     * Puts a key-value pair into the map.
+     * 
+     * @param key the key to be added
+     * @param value the value to be associated with the key
+     * @return the previous value associated with the key, or null if there was no mapping for the key
+     */
     public V put(K key, V value) {
         if (key == null || value == null) {
             throw new IllegalArgumentException("Key or value cannot be null");
@@ -49,6 +68,12 @@ public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
         return null;
     }
 
+    /**
+     * Removes the mapping for a key from this map if it is present.
+     * 
+     * @param key the key whose mapping is to be removed from the map
+     * @return the previous value associated with the key, or null if there was no mapping for the key
+     */
     @Override
     public V remove(K key) {
         int index = getIndex(key);
@@ -70,6 +95,12 @@ public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
         return null;
     }
 
+    /**
+     * Returns the value to which the specified key is mapped, or null if this map contains no mapping for the key.
+     * 
+     * @param key the key whose associated value is to be returned
+     * @return the value to which the specified key is mapped, or null if this map contains no mapping for the key
+     */
     @Override
     public V get(K key) {
         int index = getIndex(key);
@@ -83,22 +114,41 @@ public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
         return null;
     }
 
+    /**
+     * Returns true if this map contains a mapping for the specified key.
+     * 
+     * @param key the key whose presence in this map is to be tested
+     * @return true if this map contains a mapping for the specified key
+     */
     @Override
     public boolean contains(K key) {
         return get(key) != null;
     }
 
+    /**
+     * Removes all of the mappings from this map.
+     */
     @Override
     public void clear() {
         table = new MapEntry[STARTING_SIZE];
         size = 0;
     }
 
+    /**
+     * Returns the number of key-value mappings in this map.
+     * 
+     * @return the number of key-value mappings in this map
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * Returns an array containing all of the keys in this map.
+     * 
+     * @return an array containing all of the keys in this map
+     */
     public K[] keyArray() {
         int count = 0;
     
@@ -126,13 +176,23 @@ public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
         return keys;
     }
 
+    /**
+     * Returns the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key.
+     * 
+     * @param key the key whose associated value is to be returned
+     * @param defaultValue the default mapping of the key
+     * @return the value to which the specified key is mapped, or defaultValue if this map contains no mapping for the key
+     */
     public V getOrDefault(K key, V defaultValue) {
         V value = this.get(key);
         return (value != null) ? value : defaultValue;
     }
     
-    
-
+    /**
+     * Returns an array containing all of the values in this map.
+     * 
+     * @return an array containing all of the values in this map
+     */
     @Override
     public V[] valueArray() {
         V[] values = (V[]) new Object[size];  // Use Object[] and cast
@@ -146,6 +206,11 @@ public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
         return values;
     }
 
+    /**
+     * Resizes the backing table to the specified new length.
+     * 
+     * @param newLength the new length of the backing table
+     */
     @Override
     public void resizeBackingTable(int newLength) {
         @SuppressWarnings("unchecked")
@@ -162,15 +227,31 @@ public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
         table = newTable;
     }
 
+    /**
+     * Returns the backing table of this map.
+     * 
+     * @return the backing table of this map
+     */
     @Override
     public MapEntry<K, V>[] getTable() {
         return table;
     }
 
+    /**
+     * Returns the index for the specified key.
+     * 
+     * @param key the key whose index is to be calculated
+     * @return the index for the specified key
+     */
     private int getIndex(K key) {
         return Math.abs(key.hashCode() % table.length);
     }
 
+    /**
+     * Returns an iterator over the keys in this map.
+     * 
+     * @return an iterator over the keys in this map
+     */
     @Override
     public Iterator<K> iterator() {
         return new Iterator<K>() {
@@ -213,6 +294,12 @@ public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
         };
     }
 
+    /**
+     * A class representing a map entry (key-value pair) in the hash map.
+     * 
+     * @param <K> the type of keys maintained by this map entry
+     * @param <V> the type of mapped values
+     */
     private static class MapEntry<K, V> implements HashMap.MapEntry<K, V> {
         private K key;
         private V value;

@@ -11,6 +11,7 @@ import java.util.Iterator;
 import boundaries.DonationManagementUI;
 
 /*
+ * Organize and handle donation with different types of donation
  * @author Heng Han Yee
  */
 
