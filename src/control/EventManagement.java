@@ -255,6 +255,7 @@ public class EventManagement {
             if(eventExist == true){
                 System.out.println("Volunteer in event " + eventID);
                 //check for volunteer in an event
+                UI.volunteerTableHeader();
                 for (EventAssignment checkVonlunteerEvent : assignments){
                     if (checkVonlunteerEvent.getEventID().equals(eventID)){
                         String VolunteerEvent = checkVonlunteerEvent.getVolunteerID();
