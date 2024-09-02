@@ -22,5 +22,5 @@ If you haven't already cloned the repository, you can do so using Git:
 3. Navigate to each subsystem under control
 - Donation Management
 - Donation Distribution
-- volunteer
-- Event handling
+- Volunteer Management
+- Event Management
