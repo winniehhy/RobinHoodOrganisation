@@ -1,10 +1,9 @@
 
 package control;
 
+import ADT.DoublyLinkedQueue;
 import boundaries.EventManagementUI;
 import entity.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import utility.*;
@@ -94,7 +93,7 @@ public class EventManagement {
                         assignments.remove(delVolunteerEvent);
                         }
                     }
-                    System.out.println("Event with "+ delEvent + "is removed");
+                    System.err.println(delEvent + "Deleted sucessfully");
                     UI.toContinue();
                     break;
                 }
@@ -228,7 +227,6 @@ public class EventManagement {
         //check event existence
         if (event.isEmpty()){
             UI.EventEmpty();
-            UI.toContinue();
         }
         else{
             //print all event
@@ -338,12 +336,12 @@ public class EventManagement {
         int totalEvent = 0,totalVolunteer = 0;
         int compareEvent = 0;
         String popularEventID = null,compareEventID = null;
+        //report template
+        UI.EventReport();
         if (event.isEmpty()){
             UI.EventEmpty();
         }
         else{
-            //report template
-            UI.EventReport();
             //check for event and print event details
             for(Event allEvent: event){
                 System.out.print(allEvent.toTable());
@@ -384,75 +382,37 @@ public class EventManagement {
     }
     
     public static void sortQueue(DoublyLinkedQueue<Event> eventQueue) {
-    if (eventQueue.isEmpty()) {
-        return; // If the queue is empty, there's nothing to sort.
-    }
-    //new array to act as sorting buffer
-    DoublyLinkedQueue<Event> sortedQueue = new DoublyLinkedQueue<>();
-    
-    while (!eventQueue.isEmpty()) {
-        // Find the event with the lowest ID
-        Event lowestEvent = null;
-        int lowestID = Integer.MAX_VALUE;
-
-        for (Event currentEvent : eventQueue) {
-            int currentID = Integer.parseInt(currentEvent.getEventID());
-            if (currentID < lowestID) {
-                lowestID = currentID;
-                lowestEvent = currentEvent;
-            }
+        if (eventQueue.isEmpty()) {
+            return; // If the queue is empty, there's nothing to sort.
         }
-        
-        // Remove the lowest event from the original queue and add it to the sorted queue
-        if (lowestEvent != null) {
-            eventQueue.remove(lowestEvent);
-            sortedQueue.enqueue(lowestEvent);
-        }
-    }
+        //new array to act as sorting buffer
+        DoublyLinkedQueue<Event> sortedQueue = new DoublyLinkedQueue<>();
     
-    // Transfer sorted events back to the original queue
-    while (!sortedQueue.isEmpty()) {
-        eventQueue.enqueue(sortedQueue.dequeue());
-    }
-}
+        while (!eventQueue.isEmpty()) {
+            // Find the event with the lowest ID
+            Event lowestEvent = null;
+            int lowestID = Integer.MAX_VALUE;
 
-    
-    //To generate data if other subsystem not working 
-    public static void generateData(DoublyLinkedQueue<Event> event,DoublyLinkedQueue<Volunteer> volunteer, DoublyLinkedQueue<EventAssignment> assignments){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-                Date date = formatter.parse("25-09-2024"); 
-                Event event1 = new Event("1000","eventname1","event description1",date);
-                event.enqueue(event1);
-                date = formatter.parse("20-10-2024");
-                Event event2 = new Event("1001","eventname2","event description2",date);
-                event.enqueue(event2);
-                date = formatter.parse("25-11-2024");
-                Event event3 = new Event("1002","eventname3","event description3",date);
-                event.enqueue(event3);
-            } catch (ParseException e) {
-                System.out.println("Invalid date format. Please enter the date in dd-MM-yyyy format.");
+            for (Event currentEvent : eventQueue) {
+                int currentID = Integer.parseInt(currentEvent.getEventID());
+                if (currentID < lowestID) {
+                    lowestID = currentID;
+                    lowestEvent = currentEvent;
+                }
             }
         
-        Volunteer volunteer1 = new Volunteer("ab121","ali",18,"0165449234");
-        volunteer.enqueue(volunteer1);
-        Volunteer volunteer2 = new Volunteer("ab122","muthu",21,"0165239234");
-        volunteer.enqueue(volunteer2);
-        Volunteer volunteer3 = new Volunteer("ab123","ah kau",19,"0165473634");
-        volunteer.enqueue(volunteer3);
-        
-        EventAssignment assignEvent1 = new EventAssignment("1000","ab121");
-        assignments.enqueue(assignEvent1);
-        EventAssignment assignEvent2 = new EventAssignment("1001","ab121");
-        assignments.enqueue(assignEvent2);
-        EventAssignment assignEvent3 = new EventAssignment("1000","ab122");
-        assignments.enqueue(assignEvent3);
-        System.out.println("Success");
-        UI.toContinue();
+            // Remove the lowest event from the original queue and add it to the sorted queue
+            if (lowestEvent != null) {
+                eventQueue.remove(lowestEvent);
+                sortedQueue.enqueue(lowestEvent);
+            }
+        }
+        // Transfer sorted events back to the original queue
+        while (!sortedQueue.isEmpty()) {
+            eventQueue.enqueue(sortedQueue.dequeue());
+        }
     }
-    
-    
-    
+  
     public static void main(String[] args){
         DoublyLinkedQueue<Event> event = RobinHoodOrganisation.eventQueue;
         DoublyLinkedQueue<Volunteer> volunteer = RobinHoodOrganisation.volunteerQueue;
@@ -507,10 +467,6 @@ public class EventManagement {
                 //return to homepage
                 RobinHoodOrganisation.main(null);
                 break;
-            case 10:
-                //to generate dummy data
-                generateData(event, volunteer,assignEvent);
-                main(null);
             default:
                 
             
