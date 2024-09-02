@@ -19,8 +19,11 @@ If you haven't already cloned the repository, you can do so using Git:
    cd src/control
    javac RobinHoodOrganisation.java
 
-3. Navigate to each subsystem under control
+3. Import hardcoded data
+   Type '5' and hit enter
+
+4. Navigate to each subsystem under control
 - Donation Management
 - Donation Distribution
-- Volunteer Management
 - Event Management
+- Volunteer Management
