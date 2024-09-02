@@ -10,7 +10,8 @@ import java.text.ParseException;
  * Contains methods for validating 'Y' and 'N' choices.
  * All methods are static and can be accessed using the class name.
  * 
- * @author Ho Zhi Xuen
+ * @author Heng Han Yee
+ *         Ho Zhi Xuen
  */
 public class StringValidation {
 

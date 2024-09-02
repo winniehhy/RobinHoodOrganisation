@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat;
 
 /**
  *
- * @ author Ho Zhi Xuen
+ * @ author Heng Han Yee
+ *          Ho Zhi Xuen
  */
 public class Donation {
     private String donorName;

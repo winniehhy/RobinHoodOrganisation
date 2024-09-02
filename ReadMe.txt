@@ -27,3 +27,6 @@ If you haven't already cloned the repository, you can do so using Git:
 - Donation Distribution
 - Event Management
 - Volunteer Management
+
+
+Team Member : Heng Han Yee, Ho Zhi Xuen, Lee Zun Wei, Phoon Chong Seng
