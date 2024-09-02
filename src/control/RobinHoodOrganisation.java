@@ -102,12 +102,12 @@ public class RobinHoodOrganisation {
                     volunteerQueue.enqueue(new Volunteer("051223145566", "John Doe", 30, "123-456-7890"));
                     volunteerQueue.enqueue(new Volunteer("990405148899", "Jane Smith", 25, "098-765-4321"));
 
-                    eventQueue.enqueue(new Event("E001", "Charity Run", "Annual charity run event", formatter.parse("01-12-2023")));
-                    eventQueue.enqueue(new Event("E002", "Food Drive", "Community food drive", formatter.parse("15-11-2023")));
+                    eventQueue.enqueue(new Event("1001", "Charity Run", "Annual charity run event", formatter.parse("01-12-2023")));
+                    eventQueue.enqueue(new Event("1002", "Food Drive", "Community food drive", formatter.parse("15-11-2023")));
 
-                    eventAssignmentQueue.enqueue(new EventAssignment("E001", "051223145566"));
-                    eventAssignmentQueue.enqueue(new EventAssignment("E002", "051223145566"));
-                    eventAssignmentQueue.enqueue(new EventAssignment("E001", "990405148899"));
+                    eventAssignmentQueue.enqueue(new EventAssignment("1001", "051223145566"));
+                    eventAssignmentQueue.enqueue(new EventAssignment("1002", "051223145566"));
+                    eventAssignmentQueue.enqueue(new EventAssignment("1001", "990405148899"));
                 } catch (ParseException e) {
                 }
                 main(null);
