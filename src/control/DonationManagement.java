@@ -429,82 +429,162 @@ public class DonationManagement {
             if (choice == 1) {
                 ui.clearScreen();
                 int year = utility.IntValidation.inputYear();
-                int total = 0;
+                int totalCash = 0;
+                int totalBooks = 0;
+                int totalToys = 0;
                 boolean found = false;
     
-                System.out.println("Filtering for the year: " + year);
+                // Collect donations from all queues for the specified year
+                DoublyLinkedQueue<Donation> cashDonations = new DoublyLinkedQueue<>();
+                DoublyLinkedQueue<Donation> bookDonations = new DoublyLinkedQueue<>();
+                DoublyLinkedQueue<Donation> toyDonations = new DoublyLinkedQueue<>();
     
                 for (Donation donation : cashQueue) {
                     if (donation.getDonationDate().getYear() + 1900 == year) {
-                        System.out.println(donation);
-                        total += donation.getAmount();
+                        cashDonations.enqueue(donation);
+                        totalCash += donation.getAmount();
                         found = true;
                     }
                 }
     
                 for (Donation donation : bookQueue) {
                     if (donation.getDonationDate().getYear() + 1900 == year) {
-                        System.out.println(donation);
+                        bookDonations.enqueue(donation);
+                        totalBooks += donation.getAmount(); // Assuming books have an amount field, adjust if needed
                         found = true;
                     }
                 }
     
                 for (Donation donation : toyQueue) {
                     if (donation.getDonationDate().getYear() + 1900 == year) {
-                        System.out.println(donation);
+                        toyDonations.enqueue(donation);
+                        totalToys += donation.getAmount(); // Assuming toys have an amount field, adjust if needed
                         found = true;
                     }
                 }
     
+                // Display results in a tabular format
                 if (!found) {
                     System.out.println("No donations found for the year " + year);
                 } else {
-                    System.out.printf("Total cash donations in %d: RM %d\n", year, total);
+                    System.out.printf("%-20s %-15s %-10s %-20s\n", "Donor Name", "Donation Type", "Amount", "Donation Date");
+                    System.out.println("-------------------------------------------------------------------------------");
+    
+                    // Display cash donations
+                    for (Donation donation : cashDonations) {
+                        System.out.printf("%-20s %-15s %-10s %-20s\n",
+                            donation.getDonorName(),
+                            "Cash",
+                            "RM " + donation.getAmount(),
+                            donation.getDonationDate());
+                    }
+    
+                    // Display book donations
+                    for (Donation donation : bookDonations) {
+                        System.out.printf("%-20s %-15s %-10s %-20s\n",
+                            donation.getDonorName(),
+                            "Book",
+                            donation.getAmount(),  // Adjust if book donations don't have an amount
+                            donation.getDonationDate());
+                    }
+    
+                    // Display toy donations
+                    for (Donation donation : toyDonations) {
+                        System.out.printf("%-20s %-15s %-10s %-20s\n",
+                            donation.getDonorName(),
+                            "Toy",
+                            donation.getAmount(),  // Adjust if toy donations don't have an amount
+                            donation.getDonationDate());
+                    }
+    
+                    // Display totals
+                    System.out.println("-------------------------------------------------------------------------------");
+                    System.out.printf("Total cash donations in %d: RM %d\n", year, totalCash);
+                    System.out.printf("Total book donations in %d:  %d\n", year, totalBooks); // Adjust if book donations don't have an amount
+                    System.out.printf("Total toy donations in %d:   %d\n", year, totalToys);  // Adjust if toy donations don't have an amount
                 }
             } else if (choice == 2) {
                 HashMapImplementation<String, Integer> donorFrequency = new HashMapImplementation<>();
-    
-                for (Donation donation : cashQueue) {
-                    String donorName = donation.getDonorName();
-                    int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
-                    donorFrequency.add(donorName, currentFrequency + 1);
+
+            for (Donation donation : cashQueue) {
+                String donorName = donation.getDonorName();
+                int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
+                donorFrequency.add(donorName, currentFrequency + 1);
+            }
+
+            for (Donation donation : bookQueue) {
+                String donorName = donation.getDonorName();
+                int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
+                donorFrequency.add(donorName, currentFrequency + 1);
+            }
+
+            for (Donation donation : toyQueue) {
+                String donorName = donation.getDonorName();
+                int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
+                donorFrequency.add(donorName, currentFrequency + 1);
+            }
+
+            System.out.println("Filter by Frequency:");
+            System.out.println("[1] One-time Donor");
+            System.out.println("[2] Regular Donor");
+            int freqChoice = utility.IntValidation.inputChoice(2);
+
+            Iterator<String> keyIterator = donorFrequency.iterator();
+            while (keyIterator.hasNext()) {
+                String key = keyIterator.next();
+                Integer value = donorFrequency.get(key);
+                if ((freqChoice == 1 && value == 1) || (freqChoice == 2 && value > 1)) {
+                    System.out.println("Donor: " + key + " | Donations: " + value);
                 }
-    
-                for (Donation donation : bookQueue) {
-                    String donorName = donation.getDonorName();
-                    int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
-                    donorFrequency.add(donorName, currentFrequency + 1);
-                }
-    
-                for (Donation donation : toyQueue) {
-                    String donorName = donation.getDonorName();
-                    int currentFrequency = donorFrequency.getOrDefault(donorName, 0);
-                    donorFrequency.add(donorName, currentFrequency + 1);
-                }
-    
-                System.out.println("Filter by Frequency:");
-                System.out.println("[1] One-time Donor");
-                System.out.println("[2] Regular Donor");
-                int freqChoice = utility.IntValidation.inputChoice(2);
-    
-                Iterator<String> keyIterator = donorFrequency.iterator();
-                while (keyIterator.hasNext()) {
-                    String key = keyIterator.next();
-                    Integer value = donorFrequency.get(key);
-                    if ((freqChoice == 1 && value == 1) || (freqChoice == 2 && value > 1)) {
-                        System.out.println("Donor: " + key + " | Donations: " + value);
-                    }
-                }
-            } else if (choice == 3) {
+            }
+        } else if (choice == 3) {
+                // Filter by Amount
                 System.out.println("Filter by Amount:");
                 System.out.println("[1] Less than 500");
                 System.out.println("[2] More than 500");
                 int amountChoice = utility.IntValidation.inputChoice(2);
     
+                DoublyLinkedQueue<Donation> filteredDonations = new DoublyLinkedQueue<>();
+    
+                // Filter and collect matching donations from all queues
                 for (Donation donation : cashQueue) {
                     if ((amountChoice == 1 && donation.getAmount() < 500) || (amountChoice == 2 && donation.getAmount() >= 500)) {
-                        System.out.println(donation);
+                        filteredDonations.enqueue(donation);
                     }
+                }
+    
+                for (Donation donation : bookQueue) {
+                    if ((amountChoice == 1 && donation.getAmount() < 500) || (amountChoice == 2 && donation.getAmount() >= 500)) {
+                        filteredDonations.enqueue(donation);
+                    }
+                }
+    
+                for (Donation donation : toyQueue) {
+                    if ((amountChoice == 1 && donation.getAmount() < 500) || (amountChoice == 2 && donation.getAmount() >= 500)) {
+                        filteredDonations.enqueue(donation);
+                    }
+                }
+    
+                // Display filtered donations in a tabular format
+                if (filteredDonations.isEmpty()) {
+                    System.out.println("No donations found matching the selected amount criteria.");
+                } else {
+                    System.out.printf("%-20s %-15s %-10s %-20s\n", "Donor Name", "Donation Type", "Amount", "Donation Date");
+                    System.out.println("-------------------------------------------------------------------------------");
+    
+                    // Display filtered donations
+                    for (Donation donation : filteredDonations) {
+                        String donationType = determineDonationType(donation, cashQueue, bookQueue, toyQueue);
+                        String amountStr = donationType.equals("Cash") ? "RM " + donation.getAmount() : String.valueOf(donation.getAmount());
+    
+                        System.out.printf("%-20s %-15s %-10s %-20s\n",
+                                donation.getDonorName(),
+                                donationType,
+                                amountStr,
+                                donation.getDonationDate());
+                    }
+    
+                    System.out.println("-------------------------------------------------------------------------------");
                 }
             } else if (choice != 4) {
                 ui.showErrorMessage("Invalid choice.");
@@ -514,6 +594,18 @@ public class DonationManagement {
         } while (choice != 4);
     }
     
+    // Helper method to determine the donation type based on the queue it came from
+    private static String determineDonationType(Donation donation, DoublyLinkedQueue<Donation> cashQueue,
+                                                DoublyLinkedQueue<Donation> bookQueue, DoublyLinkedQueue<Donation> toyQueue) {
+        if (cashQueue.contains(donation)) {
+            return "Cash";
+        } else if (bookQueue.contains(donation)) {
+            return "Book";
+        } else if (toyQueue.contains(donation)) {
+            return "Toy";
+        }
+        return "Unknown";
+    }
 
 
     public static void displaySummary(DoublyLinkedQueue<Donation> cashQueue, DoublyLinkedQueue<Donation> bookQueue, DoublyLinkedQueue<Donation> toyQueue) {

@@ -3,6 +3,10 @@ package ADT;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/*
+ * @author Heng Han Yee
+ */
+
 public class HashMapImplementation<K, V> implements HashMap<K, V>, Iterable<K> {
     private static final int STARTING_SIZE = 16;
     private static final double MAX_LOAD_FACTOR = 0.75;
