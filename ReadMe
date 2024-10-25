@@ -1,9 +1,9 @@
-RobinHoodOrganisation
+# RobinHoodOrganisation
 
 Overview
 The RobinHoodOrganisation application is designed to manage donations, volunteers, and events for a non-profit organization. It includes features such as adding donations, listing events assigned to volunteers, and more.
 
-Prerequisites
+# Prerequisites
 - Java Development Kit (JDK) 8 or higher
 - Git (optional, for cloning the repository)
 
